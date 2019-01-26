@@ -1,1 +1,18 @@
-<h1>Welcome to AgileHR</h1>
+<head>
+    <title>{% block title %}Bangazon{% endblock %}</title>
+</head>
+
+<h1 style="font-family:Arial,sans-serif;">Bangazon, LLC</h1>
+
+<a href="{% url 'agileHR:employee' %}">Employees</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'agileHR:department' %}">Departments</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'agileHR:training' %}">Trainings</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'agileHR:computer' %}">Computers</a>&nbsp;&nbsp;&nbsp;
+
+<br/>
+
+<body>
+    {% block content %}
+    {% endblock content %}
+</body>
+
