@@ -10,7 +10,7 @@
 
 ## Using the Application
 - Initialize the project using the command line by typing `python manage.py runserver` in the main directory.
-- Access the application in a browser at `http://localhost:8000`.
+- Access the application in a browser at `http://localhost:8000/bangazon`.
 - A navbar at the top of the page can be used to visit each of Bangazon's four Human Resources focus areas (employees, departments, trainings, and computers).
 
 ## Employees
