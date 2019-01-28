@@ -9,6 +9,9 @@ from ..models import Department, Employee
 # Response_codes
 
 class DepartmentTest(TestCase):
+    """[Test case 1 (test_list_department) verifies that departments are listed when the department link is clicked]"""
+
+
     def test_list_department(self):
         new_dept = Department.objects.create(
             name = "Nashville Software School",
