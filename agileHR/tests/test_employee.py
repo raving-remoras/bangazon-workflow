@@ -39,4 +39,3 @@ class EmployeeTest(TestCase):
         self.assertIn(new_employee.last_name.encode(), response.content)
         self.assertIn(new_employee.department.name.encode(), response.content)
 
-        print("hi")
