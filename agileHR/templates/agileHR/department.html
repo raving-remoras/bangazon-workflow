@@ -3,14 +3,17 @@
 {% block content %}
     <h2>Departments</h2>
     <ul>
-    {% for dept in departments %}
-        <li>
-            {{dept.name|upper}}<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Budget: ${{dept.budget|stringformat:".2f"}}<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employees Assigned:
-            <ul></ul>
-            {% if employees.department_id == dept.id %}{{employees.first_name}} {{employees.last_name}}{% endif %}
-        </li>
-    {% endfor %}
+        {% for dept in departments %}
+            <li>
+                {{dept.name|upper}}<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Budget: ${{dept.budget|stringformat:".2f"}}<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employees Assigned:
+                <ul>
+                    {% for emp in employees %}
+                    {% if emp.department_id == dept.id %}<li>{{emp.first_name}} {{emp.last_name}}</li>{% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
     </ul>
 {% endblock content %}
