@@ -1,0 +1,32 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="column">
+      <h2>{{computer.make}} {{computer.model}}</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <h4>Date Purchased</h4>
+      <p>{{computer.purchase_date}}</p>
+
+      {% if computer.retire_date %}
+        <h4>Date Retired</h4>
+        <p>{{computer.retire_date}}</p>
+      {% endif %}
+
+      <h4>Assigned to:
+      {% if computer.employeecomputer_set.all %}
+        {% for rel in computer.employeecomputer_set.all %}
+          {{ rel.employee.first_name }} {{ rel.employee.last_name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% else %}
+      Available
+      {% endif %}
+      </h4>
+
+    </div>
+  </div>
+{% endblock %}

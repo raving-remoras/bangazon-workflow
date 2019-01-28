@@ -41,8 +41,9 @@ class Command(BaseCommand):
             "retire_date": None
         })
 
-        seeder.add_entity(EmployeeComputer, 25, {
-            "date_assigned": lambda x: timezone.now()
+        seeder.add_entity(EmployeeComputer, 75, {
+            "date_assigned": lambda x: timezone.now(),
+            "date_revoked": lambda x: random.choice([timezone.now(), None, None, None, None, None])
         })
 
         # Seed data for Training
