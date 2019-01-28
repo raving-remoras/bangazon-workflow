@@ -70,7 +70,7 @@ class Computer(models.Model):
     model = models.CharField(max_length=100)
     serial_no = models.CharField(max_length=100)
     purchase_date = models.DateTimeField()
-    retire_date = models.DateTimeField()
+    retire_date = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
         return f"{self.make} {self.model} - Serial No: {self.serial_no}"
