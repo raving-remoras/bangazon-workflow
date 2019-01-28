@@ -14,9 +14,18 @@ def employee(request):
 def department(request):
     departments = Department.objects.all()
     employees = Employee.objects.all()
+    dept_size = Employee.objects.raw("""SELECT COUNT(agileHR_employee.department_id) AS "count", agileHR_department.id
+        FROM agileHR_employee
+        JOIN agileHR_department WHERE agileHR_department.id = agileHR_employee.department_id
+        GROUP BY department_id"""
+    )
+
+    print(dept_size)
+
     context = {
         "departments": departments,
-        "employees": employees
+        "employees": employees,
+        "dept_size": dept_size
     }
     return render(request, "agileHR/department.html", context)
 
