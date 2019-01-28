@@ -1,14 +1,15 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-from .models import Department, Employee
+from .models import Employee, Department, Training, Computer
 
 def index(request):
     context = {}
     return render(request, "agileHR/index.html", context)
 
 def employee(request):
-    context = {}
-    return render(request, "agileHR/employee.html", context)
+    employee_list = Employee.objects.all()
+    context = {'employee_list': employee_list}
+    return render(request, 'agileHR/employee.html', context)
 
 def department(request):
     departments = Department.objects.all()

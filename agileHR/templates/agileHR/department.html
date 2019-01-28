@@ -7,7 +7,9 @@
         <li>
             {{dept.name|upper}}<br />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Budget: ${{dept.budget|stringformat:".2f"}}<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employees Assigned: {% if employees.department_id == dept.id %}{{employees.first_name}} {{employees.last_name}}{% endif %}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employees Assigned:
+            <ul></ul>
+            {% if employees.department_id == dept.id %}{{employees.first_name}} {{employees.last_name}}{% endif %}
         </li>
     {% endfor %}
     </ul>
