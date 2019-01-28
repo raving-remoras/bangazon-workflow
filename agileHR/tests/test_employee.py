@@ -2,7 +2,8 @@ import unittest
 import datetime
 from django.test import TestCase
 from django.urls import reverse
-from .models import Employee, Department
+from ..models import Employee, Department
+
 
 class EmployeeTest(TestCase):
     """Defines tests for Employee model and views
@@ -37,3 +38,5 @@ class EmployeeTest(TestCase):
         self.assertIn(new_employee.first_name.encode(), response.content)
         self.assertIn(new_employee.last_name.encode(), response.content)
         self.assertIn(new_employee.department.name.encode(), response.content)
+
+        print("hi")
