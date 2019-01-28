@@ -1,5 +1,16 @@
 {% extends "agileHR/index.html" %}
 
 {% block content %}
-    <h2>Employees</h2>
+<div class="text-center"><h2 >Employees</h2></div>
+
+<div class="list-group">
+  {% for employee in employee_list %}
+  <a href="{% url 'agileHR:employee_detail' employee.id %}" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{employee.first_name}} {{employee.last_name}}</h5>
+    </div>
+    <p class="mb-1">Department: {{employee.department.name|title}}</p>
+  </a>
+  {% endfor %}
+</div>
 {% endblock content %}

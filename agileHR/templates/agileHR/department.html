@@ -1,5 +1,21 @@
 {% extends "agileHR/index.html" %}
+{% load humanize %}
 
 {% block content %}
     <h2>Departments</h2>
+    <h5><a href="">Create New</a></h5>
+    <ul>
+        {% for dept in departments %}
+            <li>
+                <a href="">{{dept.name|upper}}</a><br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Budget: ${{dept.budget|intcomma}}<br />
+                    {% for dept_ in dept_size %}
+                        {% if dept_.id == dept.id %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Size: {{dept_.count}}
+                        {% endif %}
+
+                    {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock content %}

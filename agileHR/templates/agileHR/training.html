@@ -5,7 +5,7 @@
   {% if training_list %}
   <ul>
     {% for training in training_list %}
-      <li><a href="{% url 'agileHR:traindetail' training.id %}">{{training.title}}</a>{{training.start_date}}</li>
+      <li>{{training.start_date}}: <a href="{% url 'agileHR:traindetail' training.id %}">{{training.title}}</a></li>
     {% endfor %}
   </ul>
   {% else %}
