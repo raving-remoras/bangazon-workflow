@@ -22,7 +22,13 @@ def employee_detail(request, employee_id):
 
 
 def department(request):
-    """This method queries the database for department and related employee information and renders the department template."""
+    """This method queries the database for department and related employee information and renders the department template.
+
+    Author: Brendan McCray
+
+    Returns:
+        render -- loads the department.html template.
+    """
 
     departments = Department.objects.all()
     employees = Employee.objects.all()
@@ -40,7 +46,13 @@ def department(request):
     return render(request, "agileHR/department.html", context)
 
 def department_detail(request, dept_id):
-    """This method queries the database for a specific department and its employee information and renders the department_detail template."""
+    """This method queries the database for a specific department and its employee information and renders the department_detail template.
+
+    Author: Brendan McCray
+
+    Returns:
+        render -- loads the department_detail.html template.
+    """
 
     department = get_object_or_404(Department, pk=dept_id)
     try:
