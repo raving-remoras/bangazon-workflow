@@ -17,6 +17,8 @@ class TrainingTest(TestCase):
 
 
     def test_list_training(self):
+        """creates a list of training sessions"""
+
         future_date = datetime.now(tz=None)+ timedelta(days=2)
         new_training = Training.objects.create(
             title="Test Training",
@@ -38,6 +40,8 @@ class TrainingTest(TestCase):
         self.assertIn(new_training.title.encode(), response.content)
 
     def test_get_training_detail(self):
+        """Creates a single instance of training session details"""
+
         future_date = datetime.now(tz=None)+ timedelta(days=2)
         training = Training.objects.create(
             title="Test Training",
