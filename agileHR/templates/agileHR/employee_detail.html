@@ -1,5 +1,20 @@
-{% extends "agileHR/index.html" %}
+{% extends "agileHR/index.html" %} {% block content %}
+<h2>{{ employee.last_name }}, {{ employee.first_name }}</h2>
+<h5>Department: {{ employee.department.name|title }}</h5>
+<div class="text-center"><h5>Training Sessions</h5></div>
+<div class="list-group">
+  {% for training_session in employee.employeetraining_set.all %}
+  <a
+    href="#"
+    class="list-group-item list-group-item-action flex-column align-items-start"
+  >
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ training_session.training.title|title }}</h5>
+    </div>
+    <p class="mb-1">Start: {{ training_session.training.start_date }}</p>
+    <p class="mb-1">End: {{ training_session.training.end_date }}</p>
+  </a>
+  {% endfor %}
+</div>
 
-{% block content %}
-    {{employee.first_name}} {{employee.last_name}}
 {% endblock content %}
