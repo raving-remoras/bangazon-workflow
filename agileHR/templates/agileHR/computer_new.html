@@ -2,9 +2,30 @@
 
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>New Computer</h2>
-        </div>
+      <div class="col">
+        <h2>New Computer</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="make">Make:</label>
+            <input class="form-control" type="text" name="make" id="make">
+          </div>
+          <div class="form-group">
+            <label for="model">Model:</label>
+            <input class="form-control" type="text" name="model" id="model">
+          </div>
+          <div class="form-group">
+            <label for="serial_no">Serial No:</label>
+            <input class="form-control" type="text" name="serial_no" id="serial_no">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add Computer</button>
+        </form>
+      </div>
     </div>
 
 {% endblock content %}
