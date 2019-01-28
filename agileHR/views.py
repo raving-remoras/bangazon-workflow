@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-from .models import Department
+from .models import Department, Employee
 
 def index(request):
     context = {}
@@ -11,9 +11,11 @@ def employee(request):
     return render(request, "agileHR/employee.html", context)
 
 def department(request):
-    departments = get_object_or_404(Department)
+    departments = Department.objects.all()
+    employees = Employee.objects.all()
     context = {
-        "departments": departments
+        "departments": departments,
+        "employees": employees
     }
     return render(request, "agileHR/department.html", context)
 
