@@ -11,6 +11,11 @@ def employee(request):
     context = {'employee_list': employee_list}
     return render(request, 'agileHR/employee.html', context)
 
+def employee_detail(request, employee_id):
+    employee = get_object_or_404(Employee, pk=employee_id)
+    context = {'employee': employee}
+    return render(request, 'agileHR/employee_detail.html', context)
+
 def department(request):
     departments = Department.objects.all()
     employees = Employee.objects.all()
