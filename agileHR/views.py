@@ -107,3 +107,10 @@ def computer_detail(request, computer_id):
     }
 
     return render(request, "agileHR/computer_detail.html", context)
+
+
+def new_computer(request):
+
+    context = {}
+
+    return render(request, "agileHR/computer_new.html", context)

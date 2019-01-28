@@ -14,6 +14,8 @@ urlpatterns = [
     # ex: /bangazon/computers/
     path("computers/", views.computer, name="computer"),
     # ex: /bangazon/computers/12
-    path("computers/<int:computer_id>", views.computer_detail, name="computer_detail")
+    path("computers/<int:computer_id>/", views.computer_detail, name="computer_detail"),
+    # ex: /bangazon/computers/new
+    path("computers/new/", views.new_computer, name="new_computer")
 ]
 
