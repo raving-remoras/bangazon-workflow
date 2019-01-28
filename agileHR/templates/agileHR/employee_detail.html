@@ -1,31 +1,37 @@
-{% extends "agileHR/index.html" %} {% block content %}
-<h2>{{ employee.first_name }} {{ employee.last_name }}</h2>
-<h5>Department: {{ employee.department.name|title }}</h5>
-<div>
-
-        {% for computer in employee_computer %}
-            <p>Assigned Computer: {{computer.computer.make}} {{computer.computer.model}} {{computer.computer.serial_no}}</p>
-        {% endfor %}
-
-</div>
-<div class="text-center"><h5>Training Sessions</h5></div>
-<div class="list-group">
-    {% if not employee.employeetraining_set.all %}
-        <p class="mb-1">No training sessions booked for this employee</p>
-    {% endif %}
-    {% for training_session in employee.employeetraining_set.all %}
-        <a
-            href="#"
-            class="list-group-item list-group-item-action flex-column align-items-start"
-        >
-            <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ training_session.training.title|title }}</h5>
-            </div>
-            <p class="mb-1">Start: {{ training_session.training.start_date }}</p>
-            <p class="mb-1">End: {{ training_session.training.end_date }}</p>
-        </a>
-  {% endfor %}
-
+{% extends "agileHR/index.html" %}
+{% block content %}
+<div class="card mx-auto" style="width: 50rem;">
+  <div class="card-body">
+    <h2 class="card-title">
+      {{ employee.first_name }} {{ employee.last_name }}
+    </h2>
+    <h5 class="card-subtitle mb-2 text-muted">
+      {{ employee.department.name | title }}
+    </h5>
+    <div class="card-text">
+      {% for computer in employee_computer %}
+      <p>
+        Assigned Computer: {{ computer.computer.make }}
+        {{ computer.computer.model }} {{ computer.computer.serial_no }}
+      </p>
+      {% endfor %}
+    </div>
+    <div class="text-center"><h5>Training Sessions</h5></div>
+    <div class="list-group">
+      {% if not employee.employeetraining_set.all %}
+      <p class="mb-1">No training sessions booked for this employee</p>
+      {% endif %}
+      {% for training_session in employee.employeetraining_set.all%}
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ training_session.training.title | title }}</h5>
+                </div>
+                <p class="mb-1">Start: {{ training_session.training.start_date }}</p>
+                <p class="mb-1">End: {{ training_session.training.end_date }}</p>
+            </a>
+      {% endfor %}
+    </div>
+  </div>
 </div>
 
 {% endblock content %}
