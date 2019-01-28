@@ -70,6 +70,7 @@ class Computer(models.Model):
     model = models.CharField(max_length=100)
     serial_no = models.CharField(max_length=100)
     purchase_date = models.DateTimeField()
+    employee = models.ManyToManyField(Employee, through="EmployeeComputer")
     retire_date = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
@@ -88,10 +89,10 @@ class EmployeeComputer(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT)
     computer = models.ForeignKey(Computer, on_delete=models.PROTECT)
     date_assigned = models.DateTimeField()
-    date_revoked = models.DateTimeField()
+    date_revoked = models.DateTimeField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.employee.name}: {self.computer.make} {self.computer.model}, Serial No: {self.computer.serial_no}"
+        return f"{self.employee.first_name} {self.employee.last_name}: {self.computer.make} {self.computer.model}, Serial No: {self.computer.serial_no}"
 
 
 class EmployeeTraining(models.Model):

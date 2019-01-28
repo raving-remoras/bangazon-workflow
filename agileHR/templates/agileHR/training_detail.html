@@ -1,0 +1,9 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+  <h2>{{ training.title }}</h2>
+  <p>Start Date: {{training.start_date}}</p>
+  <p>End Date: {{training.end_date}}</p>
+  <p>Max Attendees: {{training.max_attendees}}</p>
+  <p>Attendee List:</p>
+{% endblock content %}

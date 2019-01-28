@@ -9,5 +9,11 @@ urlpatterns = [
     path("departments/", views.department, name="department"),
     path("departments/<int:dept_id>/", views.department_detail, name="department_detail"),
     path("trainings/", views.training, name="training"),
-    path("computers/", views.computer, name="computer")
+    # ex: /bangazon/trainings/5
+    path("trainings/<int:training_id>", views.traindetail, name="traindetail"),
+    # ex: /bangazon/computers/
+    path("computers/", views.computer, name="computer"),
+    # ex: /bangazon/computers/12
+    path("computers/<int:computer_id>", views.computer_detail, name="computer_detail")
 ]
+

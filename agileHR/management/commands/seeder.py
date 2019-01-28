@@ -28,6 +28,7 @@ class Command(BaseCommand):
             "is_supervisor": False
         })
 
+
         # Seed data for Computers
         computer_makes = ["Apple", "Dell", "Samsung", "Lenovo", "MSI", "ASUS", "Potato"]
         computer_models = ["Model 1", "Model 2", "SilverBook", "ThoughtSheet", "YogaPose", "Orange Pro", "XPQ", "Inspiroff", "IsThisThingOn", "Cardboard", "Grandpa", "PieceOfCrap", "AbsoluteUnit", "Blinky", "Pinky", "Inky", "Clyde", "BigBrother"]
@@ -40,17 +41,26 @@ class Command(BaseCommand):
             "retire_date": None
         })
 
-        seeder.add_entity(EmployeeComputer, 25, {
-            "date_assigned": lambda x: timezone.now()
+        seeder.add_entity(EmployeeComputer, 75, {
+            "date_assigned": lambda x: timezone.now(),
+            "date_revoked": lambda x: random.choice([timezone.now(), None, None, None, None, None])
         })
 
         # Seed data for Training
         max_attendees=[10, 15, 20, 22, 24, 27,28, 35, 40, 53]
 
-        seeder.add_entity(Training, 40, {
+        # Seed data for past training
+        # seeder.add_entity(Training, 10, {
+        #     "title":lambda x: seeder.faker.catch_phrase(),
+        #     "start_date":lambda x: seeder.faker.date_time_this_decade(before_now=True, after_now=False),
+        #     "end_date":lambda x: seeder.faker.date_time_this_decade(before_now=True, after_now=False),
+        #     "max_attendees": lambda x: seeder.faker.word(ext_word_list=max_attendees),
+        # })
+
+        seeder.add_entity(Training, 20, {
             "title":lambda x: seeder.faker.catch_phrase(),
-            "start_date":lambda x: seeder.faker.date_time_this_decade(before_now=True, after_now=False),
-            "end_date": lambda x: seeder.faker.future_datetime(end_date="+30d"),
+            "start_date":lambda x: seeder.faker.future_datetime(end_date="+60d"),
+            "end_date":lambda x: seeder.faker.future_datetime(end_date="+90d"),
             "max_attendees": lambda x: seeder.faker.word(ext_word_list=max_attendees),
         })
 

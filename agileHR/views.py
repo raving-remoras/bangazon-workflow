@@ -1,20 +1,25 @@
+import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-from .models import Employee, Department, Training, Computer
+
+from .models import *
 
 def index(request):
     context = {}
     return render(request, "agileHR/index.html", context)
+
 
 def employee(request):
     employee_list = Employee.objects.all()
     context = {'employee_list': employee_list}
     return render(request, 'agileHR/employee.html', context)
 
+
 def employee_detail(request, employee_id):
     employee = get_object_or_404(Employee, pk=employee_id)
     context = {'employee': employee}
     return render(request, 'agileHR/employee_detail.html', context)
+
 
 def department(request):
     """This method queries the database for department and related employee information and renders the department template."""
@@ -46,9 +51,47 @@ def department_detail(request, dept_id):
     return render(request, 'agileHR/department_detail.html', context)
 
 def training(request):
-    context = {}
+    training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by('start_date')
+    context = {'training_list': training_list}
     return render(request, "agileHR/training.html", context)
 
+
+def traindetail(request, training_id):
+    training = get_object_or_404(Training, pk=training_id)
+    context = {'training': training}
+    return render(request, 'agileHR/training_detail.html', context)
+
+
 def computer(request):
-    context = {}
-    return render(request, "agileHR/computer.html", context)
+    """Displays the list of computers currently owned by the company with links to details for each one.
+
+    Author: Sebastian Civarolo
+
+    Returns:
+        render -- loads the computer.html template.
+    """
+
+    computers = Computer.objects.all()
+    context = {
+        "computers": computers
+    }
+    return render(request, 'agileHR/computer.html', context)
+
+
+def computer_detail(request, computer_id):
+    """Displays the details about a single computer owned by the company.
+
+    Arguments:
+        computer_id {int} -- The pk of the computer being requested.
+
+    Returns:
+        render -- Returns the computer_detail template
+    """
+
+    computer = get_object_or_404(Computer, pk=computer_id)
+
+    context = {
+        "computer": computer
+    }
+
+    return render(request, "agileHR/computer_detail.html", context)
