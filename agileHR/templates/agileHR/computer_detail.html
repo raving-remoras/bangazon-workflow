@@ -17,9 +17,15 @@
         <p>{{computer.retire_date}}</p>
       {% endif %}
 
-      <h4>Assigned to: {% for rel in computer.employeecomputer_set.all %}
-        {{ rel.employee.first_name }} {{ rel.employee.last_name }}{% if not forloop.last %}, {% endif %}
-      {% endfor %}</h4>
+      <h4>Assigned to:
+      {% if computer.employeecomputer_set.all %}
+        {% for rel in computer.employeecomputer_set.all %}
+          {{ rel.employee.first_name }} {{ rel.employee.last_name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      {% else %}
+      Available
+      {% endif %}
+      </h4>
 
     </div>
   </div>
