@@ -20,8 +20,6 @@ def department(request):
         GROUP BY department_id"""
     )
 
-    print(dept_size)
-
     context = {
         "departments": departments,
         "employees": employees,
