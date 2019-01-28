@@ -2,13 +2,16 @@
 
 {% block content %}
     <div class="row">
-        <div class="column">
+        <div class="col-10">
             <h2>Computers</h2>
+        </div>
+        <div class="col-2 text-right">
+          <a href="{% url 'agileHR:new_computer' %}"class="btn btn-primary text-white">New Computer</a>
         </div>
     </div>
 
     <div class="row">
-        <div class="column">
+        <div class="col">
             <ul>
             {% for computer in computers %}
                 <li><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a></li>
