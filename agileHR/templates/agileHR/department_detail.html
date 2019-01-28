@@ -1,0 +1,15 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+    <h2>{{department.name|upper}}</h2>
+    <h5>Current Employees:</h5>
+    <ul>
+        {% if employees %}
+            {% for emp in employees %}
+                <li>{{emp.first_name}} {{emp.last_name}}</li>
+            {% endfor %}
+        {% else %}
+            <li>No employees are assigned to this department.</li>
+        {% endif %}
+    </ul>
+{% endblock content %}
