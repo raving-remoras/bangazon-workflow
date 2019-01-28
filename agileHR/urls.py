@@ -6,6 +6,10 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("employees/", views.employee, name="employee"),
     path("departments/", views.department, name="department"),
+    # ex: /agileHR/trainings/
     path("trainings/", views.training, name="training"),
-    path("computers/", views.computer, name="computer")
+    # ex: /agileHR/trainings/5
+    path("trainings/<int:training_id>", views.traindetail, name="traindetail"),
+    path("computers/", views.computer, name="computer"),
 ]
+

@@ -1,5 +1,14 @@
 {% extends "agileHR/index.html" %}
 
 {% block content %}
-    <h2>Trainings</h2>
+  <h2>Trainings</h2>
+  {% if training_list %}
+  <ul>
+    {% for training in training_list %}
+      <li><a href="{% url 'agileHR:traindetail' training.id %}">{{training.title}}</a>{{training.start_date}}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>No trainings are currently scheduled</p>
+  {% endif %}
 {% endblock content %}
