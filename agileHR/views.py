@@ -47,11 +47,9 @@ def computer_detail(request, computer_id):
         render -- Returns the computer_detail template
     """
     computer = Computer.objects.get(pk=computer_id)
-    computer_employee = EmployeeComputer.objects.filter(computer_id=computer_id)
 
     context = {
-        "computer": computer,
-        "computer_employee": computer_employee
+        "computer": computer
     }
 
     return render(request, "agileHR/computer_detail.html", context)

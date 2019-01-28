@@ -17,10 +17,9 @@
         <p>{{computer.retire_date}}</p>
       {% endif %}
 
-      <h4>Assigned to: {% for relationship in computer_employee.all %}
-        {{ relationship.employee.first_name }}
+      <h4>Assigned to: {% for rel in computer.employeecomputer_set.all %}
+        {{ rel.employee.first_name }} {{ rel.employee.last_name }}{% if not forloop.last %}, {% endif %}
       {% endfor %}</h4>
-
 
     </div>
   </div>
