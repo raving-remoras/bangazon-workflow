@@ -17,6 +17,8 @@ def employee_detail(request, employee_id):
     return render(request, 'agileHR/employee_detail.html', context)
 
 def department(request):
+    """This method queries the database for department and related employee information and renders the department template."""
+
     departments = Department.objects.all()
     employees = Employee.objects.all()
     dept_size = Employee.objects.raw("""SELECT COUNT(agileHR_employee.department_id) AS "count", agileHR_department.id
@@ -31,6 +33,17 @@ def department(request):
         "dept_size": dept_size
     }
     return render(request, "agileHR/department.html", context)
+
+def department_detail(request, dept_id):
+    """This method queries the database for a specific department and its employee information and renders the department_detail template."""
+
+    department = get_object_or_404(Department, pk=dept_id)
+    try:
+        employees = Employee.objects.filter(department_id=dept_id)
+        context = {"department": department, "employees": employees}
+    except Employee.DoesNotExist:
+        context = {"department": department}
+    return render(request, 'agileHR/department_detail.html', context)
 
 def training(request):
     context = {}

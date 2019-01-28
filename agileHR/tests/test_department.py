@@ -31,12 +31,10 @@ class DepartmentTest(TestCase):
         self.assertIn(new_dept.name.upper().encode(), response.content)
 
 
-    # def test_get_training_detail(self):
-    #     new_training = Training.objects.create(
-    #         title="Test Training",
-    #         start_date= datetime.now(),
-    #         end_date= datetime.datetime('2019-02-28 03:20:23'),
-    #         max_attendees= 41
-    #     )
-    #     self.client.get(reverse('agileHR:traindetail', args=(1,)))
-    #     self.assertEqual(response.context["training"].title, "Test Training")
+    def test_get_department_detail(self):
+        new_dept = Department.objects.create(
+            name = "Nashville Software School"
+        )
+
+        self.client.get(reverse('agileHR:department_detail', args=(1,)))
+        self.assertEqual(response.context["department"].name, "Nashville Software School")
