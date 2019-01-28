@@ -1,21 +1,22 @@
 import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-from .models import Employee, Department, Training, Computer, EmployeeTraining
+from .models import Employee, Department, Training, Computer, EmployeeTraining, EmployeeComputer
 
 def index(request):
     context = {}
     return render(request, "agileHR/index.html", context)
 
 def employee(request):
-    employee_list = Employee.objects.all()
+    employee_list = Employee.objects.order_by('last_name')
     context = {'employee_list': employee_list}
     return render(request, 'agileHR/employee.html', context)
 
 def employee_detail(request, employee_id):
     employee = get_object_or_404(Employee, pk=employee_id)
-    context = {'employee': employee}
-    return render(request, 'agileHR/employee_detail.html', context)
+    employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id).filter(date_revoked=None)
+    context = {"employee": employee, "employee_computer": employee_computer}
+    return render(request, "agileHR/employee_detail.html", context)
 
 def department(request):
     departments = Department.objects.all()

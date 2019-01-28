@@ -1,6 +1,13 @@
 {% extends "agileHR/index.html" %} {% block content %}
-<h2>{{ employee.last_name }}, {{ employee.first_name }}</h2>
+<h2>{{ employee.first_name }} {{ employee.last_name }}</h2>
 <h5>Department: {{ employee.department.name|title }}</h5>
+<div>
+
+        {% for computer in employee_computer %}
+            <p>Assigned Computer: {{computer.computer.make}} {{computer.computer.model}} {{computer.computer.serial_no}}</p>
+        {% endfor %}
+
+</div>
 <div class="text-center"><h5>Training Sessions</h5></div>
 <div class="list-group">
     {% if not employee.employeetraining_set.all %}
