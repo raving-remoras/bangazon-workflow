@@ -91,7 +91,7 @@ class EmployeeComputer(models.Model):
     date_revoked = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.employee.name}: {self.computer.make} {self.computer.model}, Serial No: {self.computer.serial_no}"
+        return f"{self.employee.first_name} {self.employee.last_name}: {self.computer.make} {self.computer.model}, Serial No: {self.computer.serial_no}"
 
 
 class EmployeeTraining(models.Model):
