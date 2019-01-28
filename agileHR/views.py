@@ -17,7 +17,6 @@ def department(request):
 
 def training(request):
     training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by('start_date')
-    # training_list.filter(start_date__gte=datetime.date.today())
     context = {'training_list': training_list}
     return render(request, "agileHR/training.html", context)
 
