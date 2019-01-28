@@ -7,7 +7,7 @@
     <ul>
         {% for dept in departments %}
             <li>
-                <a href="">{{dept.name|upper}}</a><br />
+                <a href="{% url 'agileHR:department_detail' dept.id %}">{{dept.name|upper}}</a><br />
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Budget: ${{dept.budget|intcomma}}<br />
                     {% for dept_ in dept_size %}
                         {% if dept_.id == dept.id %}
