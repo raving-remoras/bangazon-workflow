@@ -108,6 +108,30 @@ def department_detail(request, dept_id):
         context = {"department": department}
     return render(request, 'agileHR/department_detail.html', context)
 
+def departmentadd(request):
+    if request.method == "POST":
+        try:
+          name = request.POST["dept_name"]
+          budget = request.POST["dept_budget"]
+          if name == "" or budget == "":
+            return render(request, "agileHR/department_form.html", {
+              "error_message": "You must complete all fields in the form.",
+              "name": name,
+              "budget": budget
+              })
+          else:
+            new_dept = Department(name=name, budget=budget)
+            new_dept.save()
+            return HttpResponseRedirect(reverse("agileHR:department"))
+        except KeyError:
+          return render(request, "agileHR/department_form.html", {
+            "error_message": "You must complete all fields in the form."
+            })
+    # if navigating through this method, only the form is loaded (no post in request)
+    else:
+      context = {}
+      return render(request, 'agileHR/department_form.html', context)
+
 def training(request):
     """Displays the list of upcoming training sessions with links to details for each one.
 

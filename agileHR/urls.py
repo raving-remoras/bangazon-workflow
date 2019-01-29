@@ -8,6 +8,7 @@ urlpatterns = [
     path("employees/<int:employee_id>/", views.employee_detail, name="employee_detail"),
     path("employees/add", views.employee_add, name="employee_add"),
     path("departments/", views.department, name="department"),
+    path('departments/add', views.departmentadd, name='departmentadd'),
     path("departments/<int:dept_id>/", views.department_detail, name="department_detail"),
     path("trainings/", views.training, name="training"),
     # ex: /bangazon/trainings/5

@@ -1,0 +1,41 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+
+<h1>Add New Department</h1>
+
+{% if error_message %}<p style="color:red"><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% if name or budget %}
+
+    <form action="{% url 'agileHR:departmentadd' %}" method="POST">
+    {% csrf_token %}
+        <label for='dept_name'>Department Name</label>
+        <input type='text' name='dept_name' value="{{name}}" />
+        <br />
+        <br />
+        <label for='dept_budget'>Department Budget</label>
+        <input type='number' name='dept_budget' value="{{budget}}" />
+        <br />
+        <br />
+        <button type='submit'>Save Department</button>
+    </form>
+
+{% else %}
+
+    <form action="{% url 'agileHR:departmentadd' %}" method="POST">
+    {% csrf_token %}
+        <label for='name'>Department Name</label>
+        <input type='text' name='dept_name' />
+        <br />
+        <br />
+        <label for='dept_budget'>Department Budget</label>
+        <input type='number' name='dept_budget' />
+        <br />
+        <br />
+        <button type='submit'>Save Department</button>
+    </form>
+
+{% endif %}
+
+{% endblock content %}
