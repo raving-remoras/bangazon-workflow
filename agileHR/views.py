@@ -165,7 +165,7 @@ def training_add(request):
         return render(request, 'agileHR/training_form.html', context)
 
 
-def computer(request):
+def computers(request):
     """Displays the list of computers currently owned by the company with links to details for each one.
 
     Author: Sebastian Civarolo
@@ -178,7 +178,7 @@ def computer(request):
     context = {
         "computers": computers
     }
-    return render(request, 'agileHR/computer.html', context)
+    return render(request, 'agileHR/computers.html', context)
 
 
 def computer_detail(request, computer_id):
@@ -198,3 +198,41 @@ def computer_detail(request, computer_id):
     }
 
     return render(request, "agileHR/computer_detail.html", context)
+
+
+def new_computer(request):
+    """Displays the form to add a new computer, and checks for all inputs before saving to the database.
+
+    Author: Sebastian Civarolo
+
+    Returns:
+        render -- Returns the form with an error message, or if successful, returns the new detail page.
+    """
+
+    if request.method == "POST":
+
+        try:
+            make = request.POST["make"]
+            model = request.POST["model"]
+            serial_no = request.POST["serial_no"]
+            purchase_date = request.POST["purchase_date"]
+
+            if make is "" or model is "" or serial_no is "" or purchase_date is "":
+                return render(request, "agileHR/computer_new.html", {
+                    "error_message": "Please fill out all fields",
+                    "make": make,
+                    "model": model,
+                    "serial_no": serial_no,
+                    "purchase_date": purchase_date
+                })
+            else:
+                new_computer = Computer(make=make, model=model, serial_no=serial_no, purchase_date=purchase_date)
+                new_computer.save()
+                return HttpResponseRedirect(reverse("agileHR:computer_detail", args=(new_computer.id,)))
+        except KeyError:
+            return render(request, "agileHR/computer_new.html", {
+                "error_message": "Please fill out all fields"
+            })
+    else:
+        context = {}
+        return render(request, "agileHR/computer_new.html", context)
