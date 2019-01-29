@@ -1,14 +1,19 @@
 {% extends "agileHR/index.html" %}
 
 {% block content %}
-  <h2>Trainings</h2>
+<div class="text-center"><h2>Training</h2></div>
+<div class="list-group">
   {% if training_list %}
-  <ul>
-    {% for training in training_list %}
-      <li>{{training.start_date}}: <a href="{% url 'agileHR:traindetail' training.id %}">{{training.title}}</a></li>
+    {% for training in training_list%}
+      <a href="{% url 'agileHR:traindetail' training.id%}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{training.title}}</h5>
+        </div>
+        <p class="mb-1">Start Date: {{training.start_date | date:'l, F d, Y'}}</p>
+      </a>
     {% endfor %}
-  </ul>
   {% else %}
-    <p>No trainings are currently scheduled</p>
+    <p>No Trainings are currently scheduled</p>
   {% endif %}
+</div>
 {% endblock content %}

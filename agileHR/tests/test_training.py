@@ -1,7 +1,7 @@
 import unittest
 from django.test import TestCase
 from django.urls import reverse
-from ..models import Training
+from ..models import Training, Employee, EmployeeTraining
 from datetime import datetime
 from datetime import timedelta
 
@@ -17,7 +17,7 @@ class TrainingTest(TestCase):
 
 
     def test_list_training(self):
-        """creates a list of training sessions"""
+        """Test case verifies that the training sessions are listed when the navbar's 'training' link is clicked"""
 
         future_date = datetime.now(tz=None)+ timedelta(days=2)
         new_training = Training.objects.create(
@@ -40,15 +40,40 @@ class TrainingTest(TestCase):
         self.assertIn(new_training.title.encode(), response.content)
 
     def test_get_training_detail(self):
-        """Creates a single instance of training session details"""
+        """Test case verifies that a specific training session's name and assigned employees are rendereed when a particular training session is clicked in the training list"""
 
         future_date = datetime.now(tz=None)+ timedelta(days=2)
-        training = Training.objects.create(
+        new_training = Training.objects.create(
             title="Test Training",
             start_date= datetime.now(tz=None),
             end_date= future_date,
             max_attendees= 41
         )
 
+        new_employee = Employee.objects.create(
+            first_name = "Rob",
+            last_name = "Boss",
+            start_date = "2016-03-07 05:53:53",
+            end_date = None,
+            is_supervisor = 0,
+            department_id = None,
+        )
+
+        join = EmployeeTraining.objects.create(
+            employee = new_employee,
+            training = new_training
+        )
+
         response = self.client.get(reverse('agileHR:traindetail', args=(1,)))
-        self.assertEqual(response.context["training"].title, "Test Training")
+
+        # Check that the response is 200 ok
+        self.assertEqual(response.status_code, 200)
+
+        # Test that the department name is in the HTML response content
+        self.assertEqual(response.context['training_details'], new_training)
+
+        # Training title appears in HTML response content
+        self.assertIn(new_training.title.encode(), response.content)
+
+        # Employee first name appears in HTML response content
+        self.assertIn(new_employee.first_name.encode(), response.content)
