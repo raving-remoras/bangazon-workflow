@@ -2,17 +2,35 @@
 {% load mathfilters %}
 
 {% block content %}
-  <h2>{{ training_details.title }}</h2>
-  <p>Start Date: {{training_details.start_date | date:'l, F d, Y'}}</p>
-  <p>End Date: {{training_details.end_date | date:'l, F d, Y'}}</p>
-  <p>Max Attendees: {{training_details.max_attendees}}</p>
-  <p>Available Seats: {{training_details.max_attendees|sub:attendee_size}}</p>
-  <p>Attendee List:</p>
-  {% if training_details.employeetraining_set.all %}
-    <ul>
-    {% for employee in training_details.employeetraining_set.all %}
-      <li>{{employee.employee.first_name}} {{employee.employee.last_name}}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
+
+<div class="card mx-auto" style="width: 50rem;">
+        <div class="card-body">
+            <h2 class="card-title">
+                {{ training_details.title }}
+            </h2>
+            <h5 class="card-subtitle mb-2 text-muted">
+                Start Date: {{training_details.start_date | date:'l, F d, Y'}} | End Date: {{training_details.end_date | date:'l, F d, Y'}}
+            </h5>
+            <div class="card-text">
+                <p>Max Attendees: {{training_details.max_attendees}} | Available Seats: {{training_details.max_attendees|sub:attendee_size}} </p>
+                <div>
+                    <a href="{% url 'agileHR:training_edit' %}"><button type="button" class="btn btn-outline-secondary">Edit Details</button></a>
+                    <a href="{% url 'agileHR:training' %}"><button type="button" class="btn btn-outline-secondary">View all Training Sessions</button></a>
+                </div>
+            </div>
+            <div class="text-center"><h5>Attendee List:</h5></div>
+            <div class="list-group">
+                {% if  not training_details.employeetraining_set.all %}
+                    <p class="mb-1">No employees currently registered for this training session</p>
+                {% endif %}
+                {% for employee in training_details.employeetraining_set.all %}
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{employee.employee.first_name}} {{employee.employee.last_name}}</h5>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock content %}
