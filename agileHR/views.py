@@ -219,7 +219,11 @@ def new_computer(request):
 
             if make is "" or model is "" or serial_no is "" or purchase_date is "":
                 return render(request, "agileHR/computer_new.html", {
-                    "error_message": "Please fill out all fields"
+                    "error_message": "Please fill out all fields",
+                    "make": make,
+                    "model": model,
+                    "serial_no": serial_no,
+                    "purchase_date": purchase_date
                 })
             else:
                 new_computer = Computer(make=make, model=model, serial_no=serial_no, purchase_date=purchase_date)
