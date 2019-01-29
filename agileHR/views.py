@@ -1,6 +1,7 @@
 import datetime
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from .models import *
 
@@ -130,7 +131,34 @@ def computer_detail(request, computer_id):
 
 
 def new_computer(request):
+    """Displays the form to add a new computer, and checks for all inputs before saving to the database.
 
-    context = {}
+    Author: Sebastian Civarolo
 
-    return render(request, "agileHR/computer_new.html", context)
+    Returns:
+        render -- Returns the form with an error message, or if successful, returns the new detail page.
+    """
+
+    if request.method == "POST":
+        print("REQUEST", request.POST)
+        try:
+            make = request.POST["make"]
+            model = request.POST["model"]
+            serial_no = request.POST["serial_no"]
+            purchase_date = datetime.datetime.now()
+
+            if make is "" or model is "" or serial_no is "":
+                return render(request, "agileHR/computer_new.html", {
+                    "error_message": "Please fill out all fields"
+                })
+            else:
+                new_computer = Computer(make=make, model=model, serial_no=serial_no, purchase_date=purchase_date)
+                new_computer.save()
+                return HttpResponseRedirect(reverse("agileHR:computer_detail", args=(new_computer.id,)))
+        except KeyError:
+            return render(request, "agileHR/computer_new.html", {
+                "error_message": "Please fill out all fields"
+            })
+    else:
+        context = {}
+        return render(request, "agileHR/computer_new.html", context)
