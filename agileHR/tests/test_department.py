@@ -106,16 +106,21 @@ class DepartmentPostTest(TestCase):
     Author: Brendan McCray
     Methods:
         test_department_form
+        test_department_post
     """
 
     def test_department_form(self):
         """Test case (test_get_department_form) verifies that the rendered form contains two required input elements"""
+
         response = self.client.get(reverse('agileHR:departmentadd'))
 
         # verify that the content of the response has the required input fields.
         self.assertIn("<input type='text' name='dept_name' />".encode(), response.content)
         self.assertIn("<input type='number' name='dept_budget' />".encode(), response.content)
 
+    def test_department_post(self):
 
-
-# Your test suite must verify that when a POST operation is performed to the corresponding URL, then a successful response is received (i.e. status code must be 200)
+        # Get 200 from request to verify that when a POST operation is performed to the corresponding URL, then a successful HttpRedirect response is received (200)
+        # NOTE: Some machines process quickly enough to capture the 302 response from the post
+        post_response = self.client.post(reverse("agileHR:departmentadd"), {"name":"Bacon Chef Department", "budget":50000})
+        self.assertEqual(post_response.status_code, 200)
