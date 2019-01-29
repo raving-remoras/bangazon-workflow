@@ -91,7 +91,7 @@ def training(request):
     return render(request, "agileHR/training.html", context)
 
 
-def traindetail(request, training_id):
+def training_detail(request, training_id):
     """Displays the details about a single training session hosted by the company
 
     Author: Kelly Morin
@@ -106,7 +106,20 @@ def traindetail(request, training_id):
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
     context = {'training_details': training_details, 'attendee_size': attendee_size}
+    print(context)
     return render(request, 'agileHR/training_detail.html', context)
+
+def training_edit(request):
+    context={}
+    return render(request, 'agileHR/training_form.html', context)
+
+def training_new(request):
+    context={}
+    return render(request, 'agileHR/training_form.html', context)
+
+def training_add(request, training_id):
+    context={}
+    return render(request, 'agileHR/training_form.html', context)
 
 
 def computer(request):

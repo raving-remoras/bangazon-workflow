@@ -1,0 +1,38 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+<div class="card mx-auto" style="width: 50 rem;">
+  <div class="card-body">
+    <h2 class="card-title">
+      Add New Training Session
+    </h2>
+    <div class="card-text">
+      <form action="{% url 'agileHR:training_add' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" name="training_title"/>
+        </div>
+        <div class="form-group">
+          <label for="start_date">Start Date</label>
+          <input type="date" class="form-control" name="start_date" />
+        </div>
+        <div class="form-group">
+          <label for="end_date">End Date</label>
+          <input type="date" class="form-control" name="end_date" />
+        </div>
+        <div class="form-group">
+          <label for="max_attendees">Maximum Attendees</label>
+          <input type="number" class="form-control" name="max_attendees"/>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-outline-secondary">Save Changes</button>
+          <a href="{% url 'agileHR:training' %}">
+            <button type="button" class="btn btn-outline-secondary">Go Back</button>
+          </a>
+        </div>
+      </form>
+      </div>
+  </div>
+</div>
+{% endblock content%}
