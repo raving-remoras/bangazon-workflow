@@ -6,7 +6,7 @@ from ..models import *
 
 
 class EmployeeTest(TestCase):
-    """Defines tests for Employee model and views
+    """Defines tests for Employee model and view
 
     Author: Rachel Daniel
     Methods:
@@ -41,7 +41,7 @@ class EmployeeTest(TestCase):
 
 
 class EmployeeDetailTest(TestCase):
-    """Defines tests for Employee Detail model and views
+    """Defines tests for Employee Detail view
 
     Author: Rachel Daniel
     Methods:
@@ -102,3 +102,16 @@ class EmployeeDetailTest(TestCase):
         self.assertIn(new_computer.make.encode(), response.content)
         self.assertIn(new_training.title.title().encode(), response.content)
 
+class EmployeeAddTest(TestCase):
+    """Defines tests for Employee Add view
+
+    Author: Rachel Daniel
+    Methods:
+        test_employee_add
+    """
+
+    def test_employee_add(self):
+        """Tests that the employee add form page loads with expected fields"""
+
+        response = self.client.get(reverse('agileHR:employee_form'))
+        self.assertIn("<input type='text' class='form-control' name='first_name' id='first_name'>".encode(), response.content)
