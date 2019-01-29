@@ -49,7 +49,7 @@ class EmployeeDetailTest(TestCase):
     """
 
     def test_employee_details(self):
-        """Tests the employee list view: creates a new employee and dept then ensures that data is present in context and content"""
+        """Tests the employee list view: creates a new employee, department, computer, training and join tables, then ensures that all data is present in context and content"""
 
         now = datetime.datetime.now()
 
@@ -74,18 +74,31 @@ class EmployeeDetailTest(TestCase):
             retire_date = None,
         )
 
-        join = EmployeeComputer.objects.create(
+        new_training = Training.objects.create(
+            title = "Taking Care of Business",
+            start_date = now,
+            end_date = now,
+            max_attendees = 30
+        )
+
+        employee_computer = EmployeeComputer.objects.create(
             computer = new_computer,
             employee = new_employee,
             date_assigned = now
         )
 
+        employee_training = EmployeeTraining.objects.create(
+            employee = new_employee,
+            training = new_training
+        )
+
         response = self.client.get(reverse('agileHR:employee_detail', args=(1,)))
 
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(len(response.context['employee']), 1)
+        self.assertEqual(len(response.context['employee_computer']), 1)
         self.assertIn(new_employee.first_name.encode(), response.content)
         self.assertIn(new_employee.last_name.encode(), response.content)
         self.assertIn(new_employee.department.name.encode(), response.content)
         self.assertIn(new_computer.make.encode(), response.content)
+        self.assertIn(new_training.title.title().encode(), response.content)
 
