@@ -63,17 +63,34 @@ def department_detail(request, dept_id):
     return render(request, 'agileHR/department_detail.html', context)
 
 def training(request):
+    """Displays the list of upcoming training sessions with links to details for each one.
+
+    Author: Kelly Morin
+
+    Returns:
+        render -- Returns the training template
+    """
+
     training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by('start_date')
     context = {'training_list': training_list}
     return render(request, "agileHR/training.html", context)
 
 
-# Error: Raw query must include the primary key
 def traindetail(request, training_id):
+    """Displays the details about a single training session hosted by the company
+
+    Author: Kelly Morin
+
+    Arguments:
+        training_id {int} -- The pk of the training seession being requested
+
+    Returns:
+        render -- Returns the training_detail template
+    """
+
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
     context = {'training_details': training_details, 'attendee_size': attendee_size}
-    print(context)
     return render(request, 'agileHR/training_detail.html', context)
 
 
