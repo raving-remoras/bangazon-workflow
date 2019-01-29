@@ -1,8 +1,8 @@
 import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-
 from .models import *
+
 
 def index(request):
     context = {}
@@ -10,15 +10,30 @@ def index(request):
 
 
 def employee(request):
-    employee_list = Employee.objects.all()
+    """This method queries the database for all employees ordered by last name and renders the employee page
+
+    Author: Rachel Daniel
+
+    Returns:
+        render -- loads the employee.html template.
+    """
+    employee_list = Employee.objects.order_by('last_name')
     context = {'employee_list': employee_list}
     return render(request, 'agileHR/employee.html', context)
 
 
 def employee_detail(request, employee_id):
+    """This method queries the database for the employee clicked on employee page as well as their current (non-revoked) computer, and renders the employee detail page
+
+    Author: Rachel Daniel
+
+    Returns:
+        render -- loads the employee_detail.html template.
+    """
     employee = get_object_or_404(Employee, pk=employee_id)
-    context = {'employee': employee}
-    return render(request, 'agileHR/employee_detail.html', context)
+    employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id).filter(date_revoked=None)
+    context = {"employee": employee, "employee_computer": employee_computer}
+    return render(request, "agileHR/employee_detail.html", context)
 
 
 def department(request):
