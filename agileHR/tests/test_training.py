@@ -78,13 +78,26 @@ class TrainingTest(TestCase):
         # Employee first name appears in HTML response content
         self.assertIn(new_employee.first_name.encode(), response.content)
 
-    # def test_display_form(self):
-    # Testing the display of the form
-    # get assertin with input from template using .encode
+    def test_display_form(self):
+        """Test case verifies that all required input fields have been correctly rendered when a form is requested"""
+        response = self.client.get(reverse('agileHR:training_add'))
 
+        # Training title input field appears in HTML response content
+        self.assertIn('<input type="text" class="form-control" name="training_title"/>'.encode(), response.content)
+
+        # Training start date input field appears in HTML response content
+        self.assertIn('<input type="date" class="form-control" name="start_date" />'.encode(), response.content)
+
+        # Training end date input field appears in HTML response content
+        self.assertIn(' <input type="date" class="form-control" name="end_date" />'.encode(), response.content)
+
+        # Training maximum attendees input field appears in HTML response content
+        self.assertIn('<input type="number" class="form-control" name="max_attendees"/>'.encode(), response.content)
 
     def test_new_training(self):
+        """Test case verifies that when a POST operation is performed to the corresponding URL, a successful response is recieved."""
         future_date = datetime.now(tz=None)+ timedelta(days=2)
+
         response = self.client.post(reverse('agileHR:training_add'), {
             "title":"Test Training",
             "start_date": datetime.now(tz=None),
@@ -92,8 +105,8 @@ class TrainingTest(TestCase):
             "max_attendees": 41
         })
 
-        # status code is 302
-        self.assertEqual(response.status_code, 302)
+        # Checks that the response is 200 ok
+        self.assertEqual(response.status_code, 200)
 
 
 
