@@ -9,10 +9,16 @@ from ..models import Department, Employee
 # Response_codes
 
 class DepartmentTest(TestCase):
-    """Test case (test_list_department) verifies that departments are listed when the navbar's 'departments' link is clicked"""
+    """Defines tests for Department list view
 
+    Author: Brendan McCray
+    Methods:
+        test_list_department
+    """
 
     def test_list_department(self):
+        """Test case (test_list_department) verifies that departments are listed when the navbar's 'departments' link is clicked"""
+
         new_dept = Department.objects.create(
             name = "Nashville Software School",
             budget = 12345678
@@ -31,9 +37,16 @@ class DepartmentTest(TestCase):
         self.assertIn(new_dept.name.upper().encode(), response.content)
 
 
+class DepartmentDetailTest(TestCase):
+    """Defines tests for Department detail view
+
+    Author: Brendan McCray
+    Methods:
+        test_get_department_detail
+    """
+
     def test_get_department_detail(self):
         """Test case (test_get_department_detail) verifies that a specific department's name and assigned employees are rendered when a particular department name is clicked in the departments list"""
-
 
         new_dept = Department.objects.create(
             id = 2,
@@ -86,3 +99,28 @@ class DepartmentTest(TestCase):
 
         # Ensure response is correct when no employees are assigned to the selected department
         self.assertIn("No employees are assigned to this department.".encode(), response.content)
+
+class DepartmentPostTest(TestCase):
+    """Defines tests for Department form and database POST
+
+    Author: Brendan McCray
+    Methods:
+        test_department_form
+        test_department_post
+    """
+
+    def test_department_form(self):
+        """Test case (test_get_department_form) verifies that the rendered form contains two required input elements"""
+
+        response = self.client.get(reverse('agileHR:departmentadd'))
+
+        # verify that the content of the response has the required input fields.
+        self.assertIn("<input type='text' name='dept_name' />".encode(), response.content)
+        self.assertIn("<input type='number' name='dept_budget' />".encode(), response.content)
+
+    def test_department_post(self):
+
+        # Get 200 from request to verify that when a POST operation is performed to the corresponding URL, then a successful HttpRedirect response is received (200)
+        # NOTE: Some machines process quickly enough to capture the 302 response from the post
+        post_response = self.client.post(reverse("agileHR:departmentadd"), {"name":"Bacon Chef Department", "budget":50000})
+        self.assertEqual(post_response.status_code, 200)
