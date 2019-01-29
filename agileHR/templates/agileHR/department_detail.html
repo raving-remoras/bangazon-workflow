@@ -6,18 +6,17 @@
         <div class="card-title">
             <div class="text-center"><h2>{{department.name|upper}}</h2></div>
         </div>
-
+    <h5><a class="btn btn-outline-secondary" href="{% url 'agileHR:department' %}">Go Back</a></h5>
     <div class="list-group-item bg-light">
         <div class="d-flex w-100 justify-content-between">
             <h4>Current Employees:</h4>
-            <a class="btn btn-outline-secondary" href="{% url 'agileHR:department' %}">Go Back</a>
         </div>
     </div>
         {% if employees %}
             {% for emp in employees %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
-                        <p class="mb-1">{{emp.first_name}} {{emp.last_name}}</p>
+                        <p class="mb-1">{{emp.last_name}}, {{emp.first_name}}</p>
                     </div>
                 </div>
             {% endfor %}

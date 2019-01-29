@@ -46,8 +46,7 @@ def department(request):
         render -- loads the department.html template.
     """
 
-    departments = Department.objects.all()
-    employees = Employee.objects.all()
+    departments = Department.objects.all().order_by("name")
     dept_size = Employee.objects.raw("""SELECT COUNT(agileHR_employee.department_id) AS "count", agileHR_department.id
         FROM agileHR_employee
         JOIN agileHR_department WHERE agileHR_department.id = agileHR_employee.department_id
@@ -56,7 +55,6 @@ def department(request):
 
     context = {
         "departments": departments,
-        "employees": employees,
         "dept_size": dept_size
     }
     return render(request, "agileHR/department.html", context)
@@ -72,7 +70,7 @@ def department_detail(request, dept_id):
 
     department = get_object_or_404(Department, pk=dept_id)
     try:
-        employees = Employee.objects.filter(department_id=dept_id)
+        employees = Employee.objects.filter(department_id=dept_id).order_by("last_name")
         context = {"department": department, "employees": employees}
     except Employee.DoesNotExist:
         context = {"department": department}
