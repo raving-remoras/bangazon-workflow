@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -133,9 +133,52 @@ def training_detail(request, training_id):
     context = {'training_details': training_details, 'attendee_size': attendee_size}
     return render(request, 'agileHR/training_detail.html', context)
 
-def training_edit(request):
-    context={}
-    return render(request, 'agileHR/training_form.html', context)
+def training_edit(request, training_id):
+    training_details = get_object_or_404(Training, pk=training_id)
+    if request.method == 'POST':
+        try:
+            title = request.POST['training_title']
+            start_date = request.POST['start_date']
+            end_date = request.POST['end_date']
+            max_attendees = request.POST['max_attendees']
+            if title is '' or start_date is'' or end_date is '' or max_attendees is '':
+                if start_date is '':
+                    new_start_date = training_details.start_date,
+                else:
+                    new_start_date = datetime.strptime(start_date)
+                if end_date is '':
+                    new_end_date = training_details.end_date,
+                else:
+                    new_end_date = end_date
+                context = {
+                    'error_message': "You must complete all fields in the form",
+                    'title': "Edit Training Session",
+                    'form_detail': "edit",
+                    'training_details': {
+                        'id': training_id,
+                        'title': title,
+                        'start_date': new_start_date,
+                        'end_date': new_end_date,
+                        'max_attendees': max_attendees}
+                }
+                print(context)
+                return render(request, 'agileHR/training_form.html', context)
+            else:
+                training_details.title = title
+                training_details.start_date = start_date
+                training_details.end_date = end_date
+                training_details.max_attendees = max_attendees
+                training_details.save()
+                return HttpResponseRedirect(reverse("agileHR:traindetail", args=(training_id,)))
+        except KeyError:
+            return render(request, "agileHR/training_form.html", {
+                'error_message': "You must complete all fields in the form",
+                'title': "Edit Training Session",
+                'form_detail': "edit", 'training_details': training_details})
+    else:
+        context={'training_details': training_details, 'title': "Edit Training Session" , 'form_detail': "edit" }
+        print(context)
+        return render(request, 'agileHR/training_form.html', context)
 
 def training_add(request):
     """Displays form to add a new training session
@@ -161,7 +204,7 @@ def training_add(request):
         except KeyError:
             return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
     else:
-        context={}
+        context={'title': "Add New Training Session" , 'form_detail': "new"}
         return render(request, 'agileHR/training_form.html', context)
 
 
