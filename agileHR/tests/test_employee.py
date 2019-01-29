@@ -6,7 +6,7 @@ from ..models import *
 
 
 class EmployeeTest(TestCase):
-    """Defines tests for Employee model and views
+    """Defines tests for Employee model and view
 
     Author: Rachel Daniel
     Methods:
@@ -41,7 +41,7 @@ class EmployeeTest(TestCase):
 
 
 class EmployeeDetailTest(TestCase):
-    """Defines tests for Employee Detail model and views
+    """Defines tests for Employee Detail view
 
     Author: Rachel Daniel
     Methods:
@@ -102,3 +102,35 @@ class EmployeeDetailTest(TestCase):
         self.assertIn(new_computer.make.encode(), response.content)
         self.assertIn(new_training.title.title().encode(), response.content)
 
+class EmployeeAddTest(TestCase):
+    """Defines tests for Employee Add view
+
+    Author: Rachel Daniel
+    Methods:
+        test_employee_form
+    """
+
+    def test_employee_form(self):
+        """Tests that the employee add form page loads with expected fields"""
+
+        response = self.client.get(reverse("agileHR:employee_add"))
+
+        self.assertIn('<input type="text" class="form-control" name="first_name" id="first_name"'.encode(), response.content)
+        self.assertIn('<input type="text" class="form-control" name="last_name" id="last_name"'.encode(), response.content)
+        self.assertIn('<select class="form-control" name="department" id="department"'.encode(), response.content)
+        self.assertIn('<input type="date" class="form-control" name="start_date" id="start_date"'.encode(), response.content)
+        self.assertIn('<input type="checkbox" class="form-check-input" name="is_supervisor" id="is_supervisor" '.encode(), response.content)
+
+    def test_employee_add(self):
+        """Tests that the employee post view successfully posts new employees"""
+
+        department = Department.objects.create(
+            name = "Accounting",
+            budget = 1000
+        )
+
+        now = datetime.datetime.now()
+
+        response = self.client.post(reverse("agileHR:employee_add"), {"first_name": "Deborah", "last_name": "Smith", "department": 1, "is_supervisor": False, "start_date": now })
+
+        self.assertEqual(response.status_code, 302)

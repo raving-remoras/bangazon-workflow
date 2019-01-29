@@ -1,0 +1,46 @@
+{% extends "agileHR/index.html" %} {% block content %}
+
+<h2>Add an Employee</h2>
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">
+        {{ error_message }}
+ </div>
+{% endif %}
+
+<form action="{% url 'agileHR:employee_add' %}" method="POST">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="first_name">First Name</label>
+    <input type="text" class="form-control" name="first_name" id="first_name" value="{{first_name}}"/>
+  </div>
+  <div class="form-group">
+    <label for="last_name">Last Name</label>
+    <input type="text" class="form-control" name="last_name" id="last_name" value="{{last_name}}"/>
+  </div>
+  <div class="form-group">
+    <label for="department">Department</label>
+    <select class="form-control" name="department" id="department" value="{{department}}">
+      {% for department in departments %}
+      <option
+        value="{{ department.id }}"
+        id="department{{ forloop.counter }}"
+        >{{ department.name }}</option
+      >
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="start_date">Start Date</label>
+    <input type="date" class="form-control" name="start_date" id="start_date" value="{% if start_date %}{{ start_date }}{% else %}{% now 'Y-m-d' %}{% endif %}"/>
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" name="is_supervisor" id="is_supervisor" />
+
+    <label class="form-check-label" for="is_supervisor"
+      >Department Supervisor</label
+    >
+  </div>
+  <input type="submit" class="btn btn-primary" value="Add Employee" />
+</form>
+{% endblock content %}
