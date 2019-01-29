@@ -4,21 +4,37 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import *
 
+
 def index(request):
     context = {}
     return render(request, "agileHR/index.html", context)
 
 
 def employee(request):
-    employee_list = Employee.objects.all()
+    """This method queries the database for all employees ordered by last name and renders the employee page
+
+    Author: Rachel Daniel
+
+    Returns:
+        render -- loads the employee.html template.
+    """
+    employee_list = Employee.objects.order_by('last_name')
     context = {'employee_list': employee_list}
     return render(request, 'agileHR/employee.html', context)
 
 
 def employee_detail(request, employee_id):
+    """This method queries the database for the employee clicked on employee page as well as their current (non-revoked) computer, and renders the employee detail page
+
+    Author: Rachel Daniel
+
+    Returns:
+        render -- loads the employee_detail.html template.
+    """
     employee = get_object_or_404(Employee, pk=employee_id)
-    context = {'employee': employee}
-    return render(request, 'agileHR/employee_detail.html', context)
+    employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id).filter(date_revoked=None)
+    context = {"employee": employee, "employee_computer": employee_computer}
+    return render(request, "agileHR/employee_detail.html", context)
 
 
 def department(request):
@@ -85,14 +101,34 @@ def departmentadd(request):
       return render(request, 'agileHR/department_form.html', context)
 
 def training(request):
+    """Displays the list of upcoming training sessions with links to details for each one.
+
+    Author: Kelly Morin
+
+    Returns:
+        render -- Returns the training template
+    """
+
     training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by('start_date')
     context = {'training_list': training_list}
     return render(request, "agileHR/training.html", context)
 
 
 def traindetail(request, training_id):
-    training = get_object_or_404(Training, pk=training_id)
-    context = {'training': training}
+    """Displays the details about a single training session hosted by the company
+
+    Author: Kelly Morin
+
+    Arguments:
+        training_id {int} -- The pk of the training seession being requested
+
+    Returns:
+        render -- Returns the training_detail template
+    """
+
+    training_details = get_object_or_404(Training, pk=training_id)
+    attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
+    context = {'training_details': training_details, 'attendee_size': attendee_size}
     return render(request, 'agileHR/training_detail.html', context)
 
 

@@ -1,9 +1,18 @@
 {% extends "agileHR/index.html" %}
+{% load mathfilters %}
 
 {% block content %}
-  <h2>{{ training.title }}</h2>
-  <p>Start Date: {{training.start_date}}</p>
-  <p>End Date: {{training.end_date}}</p>
-  <p>Max Attendees: {{training.max_attendees}}</p>
+  <h2>{{ training_details.title }}</h2>
+  <p>Start Date: {{training_details.start_date | date:'l, F d, Y'}}</p>
+  <p>End Date: {{training_details.end_date | date:'l, F d, Y'}}</p>
+  <p>Max Attendees: {{training_details.max_attendees}}</p>
+  <p>Available Seats: {{training_details.max_attendees|sub:attendee_size}}</p>
   <p>Attendee List:</p>
+  {% if training_details.employeetraining_set.all %}
+    <ul>
+    {% for employee in training_details.employeetraining_set.all %}
+      <li>{{employee.employee.first_name}} {{employee.employee.last_name}}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
 {% endblock content %}
