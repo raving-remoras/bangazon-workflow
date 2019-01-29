@@ -107,18 +107,21 @@ def training_detail(request, training_id):
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
     context = {'training_details': training_details, 'attendee_size': attendee_size}
-    print(context)
     return render(request, 'agileHR/training_detail.html', context)
 
 def training_edit(request):
     context={}
     return render(request, 'agileHR/training_form.html', context)
 
-def training_new(request):
-    context={}
-    return render(request, 'agileHR/training_form.html', context)
-
 def training_add(request):
+    """Displays form to add a new training session
+
+    Author: Kelly Morin
+
+    Returns:
+        render -- returns the training form template, an error message to be displayed or the training template with the new training session added
+    """
+
     if request.method == 'POST':
         try:
             title= request.POST['training_title']

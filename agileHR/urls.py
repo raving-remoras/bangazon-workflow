@@ -13,8 +13,6 @@ urlpatterns = [
     path("trainings/<int:training_id>", views.training_detail, name="traindetail"),
     # ex: /bangazon/trainings/edit
     path("trainings/edit", views.training_edit, name="training_edit"),
-    # ex: /bangazon/trainings/new
-    path("trainings/new", views.training_new, name="training_new"),
     # ex: /bangazon/trainings/add
     path("trainings/add", views.training_add, name="training_add"),
     # ex: /bangazon/computers/
