@@ -12,15 +12,15 @@
 
     <form action="{% url 'agileHR:departmentadd' %}" method="POST">
     {% csrf_token %}
-        <label for='dept_name'>Department Name</label>
-        <input type='text' name='dept_name' value="{{name}}" class="form-control" />
+        <label for="dept_name">Department Name</label>
+        <input type="text" name="dept_name" class="form-control" value="{{name}}" />
         <br />
         <br />
-        <label for='dept_budget'>Department Budget ($)</label>
-        <input type='number' name='dept_budget' value="{{budget}}" class="form-control" />
+        <label for="dept_budget">Department Budget ($)</label>
+        <input type="number" name="dept_budget" class="form-control" value="{{budget}}" />
         <br />
         <br />
-        <button type='submit' class="btn btn-outline-secondary">Save Department</button>
+        <button type="submit" class="btn btn-outline-secondary">Save Department</button>
         <a class="btn btn-outline-secondary" href="{% url 'agileHR:department' %}">Go Back</a>
     </form>
 
