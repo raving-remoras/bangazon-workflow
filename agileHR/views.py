@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
-
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from .models import *
 
 def index(request):
@@ -61,6 +61,28 @@ def department_detail(request, dept_id):
     except Employee.DoesNotExist:
         context = {"department": department}
     return render(request, 'agileHR/department_detail.html', context)
+
+def departmentadd(request):
+    if request.method == 'POST':
+        try:
+          name = request.POST['dept_name']
+          budget = request.POST['dept_budget']
+          if name == '' or budget == '':
+            return render(request, 'agileHR/department_form.html', {
+              'error_message': "You must complete all fields in the form."
+              })
+          else:
+            new_dept = Department(name=name, budget=budget)
+            new_dept.save()
+            return HttpResponseRedirect(reverse('agileHR:department'))
+        except KeyError:
+          return render(request, 'agileHR/department_form.html', {
+            'error_message': "You must complete all fields in the form."
+            })
+    # if navigating through this method, only the form is loaded (no post in request)
+    else:
+      context = {}
+      return render(request, 'agileHR/department_form.html', context)
 
 def training(request):
     training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by('start_date')
