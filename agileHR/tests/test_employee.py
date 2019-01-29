@@ -124,5 +124,13 @@ class EmployeeAddTest(TestCase):
     def test_employee_add(self):
         """Tests that the employee post view successfully posts new employees"""
 
-        response = self.client.post(reverse('agileHR:employee_add'), {})
+        department = Department.objects.create(
+            name = "Accounting",
+            budget = 1000
+        )
 
+        now = datetime.datetime.now()
+
+        response = self.client.post(reverse("agileHR:employee_add"), {"first_name": "Deborah", "last_name": "Smith", "department": 1, "is_supervisor": False, "start_date": now })
+
+        self.assertEqual(response.status_code, 302)
