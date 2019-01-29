@@ -34,43 +34,38 @@ def employee_detail(request, employee_id):
     context = {"employee": employee, "employee_computer": employee_computer}
     return render(request, "agileHR/employee_detail.html", context)
 
-def employee_form(request):
-    """This method queries the database for the departments and renders the form for adding a new employee
-
-    Author: Rachel Daniel
-
-    Returns:
-        render -- loads the employee_form.html template.
-    """
-    departments = Department.objects.all()
-    context = {"departments": departments}
-    return render(request, "agileHR/employee_form.html", context)
 
 def employee_add(request):
-    """This method collects form data from post request, validates, and adds a new employee
+    """This method queries the database for the departments and renders the form for adding a new employee. Upon submit, the method collects form data from post request, validates, and adds a new employee
 
     Author: Rachel Daniel
 
     Returns:
-        render -- loads the employee_form.html template.
+        render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
+        HttpResponseRedirect -- loads the employee page if add was successful
     """
-    try:
-        department = get_object_or_404(Department, pk=request.POST["department"])
-        first_name = (request.POST["first_name"])
-        last_name = (request.POST["last_name"])
-        start_date = (request.POST["start_date"])
-        is_supervisor = request.POST.get("is_supervisor", "") == "on"
-        if first_name == "" or last_name == "":
-            return render(request, 'agileHR/employee_form.html', {'error_message': "You must complete all fields in the form."})
-        else:
-            new_employee = Employee(first_name=first_name, last_name=last_name, department=department, is_supervisor=is_supervisor, start_date=start_date)
-            new_employee.save()
-            return HttpResponseRedirect(reverse('agileHR:employee'))
+    if request.method == "POST":
+        try:
+            department = get_object_or_404(Department, pk=request.POST["department"])
+            first_name = (request.POST["first_name"])
+            last_name = (request.POST["last_name"])
+            start_date = (request.POST["start_date"])
+            is_supervisor = request.POST.get("is_supervisor", "") == "on"
+            if first_name == "" or last_name == "":
+                return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form."})
+            else:
+                new_employee = Employee(first_name=first_name, last_name=last_name, department=department, is_supervisor=is_supervisor, start_date=start_date)
+                new_employee.save()
+                return HttpResponseRedirect(reverse('agileHR:employee'))
 
-    except KeyError:
-        return render(request, 'agileHR/employee_form.html', {
-        'error_message': "You must complete all fields in the form."
-        })
+        except KeyError:
+            return render(request, 'agileHR/employee_form.html', {
+            'error_message': "You must complete all fields in the form."
+            })
+    else:
+        departments = Department.objects.all()
+        context = {"departments": departments}
+        return render(request, "agileHR/employee_form.html", context)
 
 def department(request):
     """This method queries the database for department and related employee information and renders the department template.
