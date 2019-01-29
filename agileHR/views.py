@@ -55,7 +55,12 @@ def employee_add(request):
             start_date = (request.POST["start_date"])
             is_supervisor = request.POST.get("is_supervisor", "") == "on"
             if first_name == "" or last_name == "" or start_date == "":
-                return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form.", "departments": departments})
+                return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form.", "departments": departments,
+                "first_name": first_name,
+                "last_name": last_name,
+                "start_date": start_date,
+                "department": department
+                })
             else:
                 new_employee = Employee(first_name=first_name, last_name=last_name, department=department, is_supervisor=is_supervisor, start_date=start_date)
                 new_employee.save()

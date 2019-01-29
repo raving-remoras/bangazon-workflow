@@ -115,11 +115,11 @@ class EmployeeAddTest(TestCase):
 
         response = self.client.get(reverse("agileHR:employee_add"))
 
-        self.assertIn('<input type="text" class="form-control" name="first_name" id="first_name" />'.encode(), response.content)
-        self.assertIn('<input type="text" class="form-control" name="last_name" id="last_name" />'.encode(), response.content)
-        self.assertIn('<select class="form-control" name="department" id="department">'.encode(), response.content)
-        self.assertIn('<input type="date" class="form-control" name="start_date" id="start_date" />'.encode(), response.content)
-        self.assertIn('<input type="checkbox" class="form-check-input" name="is_supervisor" id="is_supervisor" />'.encode(), response.content)
+        self.assertIn('<input type="text" class="form-control" name="first_name" id="first_name"'.encode(), response.content)
+        self.assertIn('<input type="text" class="form-control" name="last_name" id="last_name"'.encode(), response.content)
+        self.assertIn('<select class="form-control" name="department" id="department"'.encode(), response.content)
+        self.assertIn('<input type="date" class="form-control" name="start_date" id="start_date"'.encode(), response.content)
+        self.assertIn('<input type="checkbox" class="form-check-input" name="is_supervisor" id="is_supervisor" '.encode(), response.content)
 
     def test_employee_add(self):
         """Tests that the employee post view successfully posts new employees"""
