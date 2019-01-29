@@ -6,9 +6,14 @@
         <h2>New Computer</h2>
       </div>
     </div>
+    {% if error_message %}
+      <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+      </div>
+    {% endif %}
     <div class="row">
       <div class="col">
-        <form action="" method="POST">
+        <form action="{% url 'agileHR:new_computer' %}" method="POST">
           {% csrf_token %}
           <div class="form-group">
             <label for="make">Make:</label>
