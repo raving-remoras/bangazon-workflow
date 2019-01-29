@@ -1,6 +1,7 @@
 import datetime
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import *
 
 
@@ -117,9 +118,24 @@ def training_new(request):
     context={}
     return render(request, 'agileHR/training_form.html', context)
 
-def training_add(request, training_id):
-    context={}
-    return render(request, 'agileHR/training_form.html', context)
+def training_add(request):
+    if request.method == 'POST':
+        try:
+            title= request.POST['training_title']
+            start_date = request.POST['start_date']
+            end_date = request.POST['end_date']
+            max_attendees = request.POST['max_attendees']
+            if title == '' or start_date == '' or end_date == '' or max_attendees == '':
+                return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
+            else:
+                new_training = Training(title=title, start_date=start_date, end_date=end_date, max_attendees=max_attendees)
+                new_training.save()
+                return HttpResponseRedirect(reverse('agileHR:training'))
+        except KeyError:
+            return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
+    else:
+        context={}
+        return render(request, 'agileHR/training_form.html', context)
 
 
 def computer(request):

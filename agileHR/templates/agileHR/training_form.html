@@ -7,6 +7,7 @@
       Add New Training Session
     </h2>
     <div class="card-text">
+      {% if error_message %}<p style="color:red"><strong>{{error_message}}</strong></p>{% endif %}
       <form action="{% url 'agileHR:training_add' %}" method="POST">
         {% csrf_token %}
         <div class="form-group">
