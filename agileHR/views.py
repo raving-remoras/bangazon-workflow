@@ -44,9 +44,12 @@ def training(request):
     return render(request, "agileHR/training.html", context)
 
 
+# Error: Raw query must include the primary key
 def traindetail(request, training_id):
-    training = get_object_or_404(Training, pk=training_id)
-    context = {'training': training}
+    training_details = get_object_or_404(Training, pk=training_id)
+    attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
+    context = {'training_details': training_details, 'attendee_size': attendee_size}
+    print(context)
     return render(request, 'agileHR/training_detail.html', context)
 
 

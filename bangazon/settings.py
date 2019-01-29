@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'agileHR',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [

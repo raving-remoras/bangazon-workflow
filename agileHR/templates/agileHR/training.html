@@ -9,7 +9,7 @@
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">{{training.title}}</h5>
         </div>
-        <p class="mb-1">Start Date: {{training.start_date}}</p>
+        <p class="mb-1">Start Date: {{training.start_date | date:'l, F d, Y'}}</p>
       </a>
     {% endfor %}
   {% else %}
