@@ -1,7 +1,15 @@
 {% extends "agileHR/index.html" %} {% block content %}
+
+<h2>Add an Employee</h2>
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">
+        {{ error_message }}
+ </div>
+{% endif %}
+
 <form action="{% url 'agileHR:employee_add' %}" method="POST">
   {% csrf_token %}
-  <h2>Add an Employee</h2>
   <div class="form-group">
     <label for="first_name">First Name</label>
     <input type="text" class="form-control" name="first_name" id="first_name" />

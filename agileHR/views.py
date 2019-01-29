@@ -2,6 +2,7 @@ import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 from .models import *
 
 
@@ -44,6 +45,8 @@ def employee_add(request):
         render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
         HttpResponseRedirect -- loads the employee page if add was successful
     """
+    departments = Department.objects.all()
+
     if request.method == "POST":
         try:
             department = get_object_or_404(Department, pk=request.POST["department"])
@@ -51,19 +54,20 @@ def employee_add(request):
             last_name = (request.POST["last_name"])
             start_date = (request.POST["start_date"])
             is_supervisor = request.POST.get("is_supervisor", "") == "on"
-            if first_name == "" or last_name == "":
-                return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form."})
+            if first_name == "" or last_name == "" or start_date == "":
+                return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form.", "departments": departments})
             else:
                 new_employee = Employee(first_name=first_name, last_name=last_name, department=department, is_supervisor=is_supervisor, start_date=start_date)
                 new_employee.save()
-                return HttpResponseRedirect(reverse('agileHR:employee'))
+                messages.success(request, 'Saved!')
+                return HttpResponseRedirect(reverse("agileHR:employee"))
+
 
         except KeyError:
             return render(request, 'agileHR/employee_form.html', {
-            'error_message': "You must complete all fields in the form."
+            'error_message': "You must complete all fields in the form.", "departments": departments
             })
     else:
-        departments = Department.objects.all()
         context = {"departments": departments}
         return render(request, "agileHR/employee_form.html", context)
 
