@@ -94,7 +94,7 @@ def traindetail(request, training_id):
     return render(request, 'agileHR/training_detail.html', context)
 
 
-def computer(request):
+def computers(request):
     """Displays the list of computers currently owned by the company with links to details for each one.
 
     Author: Sebastian Civarolo
@@ -107,7 +107,7 @@ def computer(request):
     context = {
         "computers": computers
     }
-    return render(request, 'agileHR/computer.html', context)
+    return render(request, 'agileHR/computers.html', context)
 
 
 def computer_detail(request, computer_id):

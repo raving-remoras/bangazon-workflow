@@ -12,7 +12,7 @@ urlpatterns = [
     # ex: /bangazon/trainings/5
     path("trainings/<int:training_id>", views.traindetail, name="traindetail"),
     # ex: /bangazon/computers/
-    path("computers/", views.computer, name="computer"),
+    path("computers/", views.computers, name="computers"),
     # ex: /bangazon/computers/12
     path("computers/<int:computer_id>/", views.computer_detail, name="computer_detail"),
     # ex: /bangazon/computers/new
