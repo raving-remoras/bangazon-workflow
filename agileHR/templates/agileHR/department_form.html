@@ -8,7 +8,7 @@
             <div class="text-center"><h2>Add New Department</h2></div>
         </div>
 
-{% if error_message %}<p style="color:red"><strong>{{ error_message }}</strong></p>{% endif %}
+{% if error_message %}<p class="alert alert-danger">{{ error_message }}</p>{% endif %}
 
     <form action="{% url 'agileHR:departmentadd' %}" method="POST">
     {% csrf_token %}
