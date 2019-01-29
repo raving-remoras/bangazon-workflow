@@ -41,7 +41,7 @@ class ComputerTest(TestCase):
             date_assigned = now
         )
 
-        response = self.client.get(reverse('agileHR:computer'))
+        response = self.client.get(reverse('agileHR:computers'))
 
 
         self.assertEqual(response.status_code, 200)
@@ -84,3 +84,30 @@ class ComputerTest(TestCase):
         self.assertIn(new_computer.make.encode(), response.content)
         self.assertIn(new_computer.model.encode(), response.content)
         self.assertEqual(len(response.context['computer'].employeecomputer_set.all()), 1)
+
+
+    def test_new_computer_form(self):
+        """Tests that the new computer form loads properly."""
+
+        response = self.client.get(reverse('agileHR:new_computer'))
+
+        self.assertIn('<input class="form-control" type="text" name="make" id="make"'.encode(), response.content)
+
+
+    def test_post_new_computer(self):
+        """Tests posting a new computer from the new_computer view."""
+
+        response = self.client.post(reverse('agileHR:new_computer'), {
+            "make": "Make",
+            "model": "Model",
+            "serial_no": '123456',
+            "purchase_date": datetime.datetime.now()})
+
+        get_response = self.client.get(reverse('agileHR:computer_detail', args=(1,)))
+
+        # Getting 302 when we have a success url and the view is redirecting, but sometimes 200?
+        self.assertIn(response.status_code, [302, 200])
+        # Get 200 when detail page loads with new computer data
+        self.assertEqual(get_response.status_code, 200)
+
+

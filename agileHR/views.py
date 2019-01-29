@@ -150,7 +150,7 @@ def training(request):
     return render(request, "agileHR/training.html", context)
 
 
-def traindetail(request, training_id):
+def training_detail(request, training_id):
     """Displays the details about a single training session hosted by the company
 
     Author: Kelly Morin
@@ -167,8 +167,39 @@ def traindetail(request, training_id):
     context = {'training_details': training_details, 'attendee_size': attendee_size}
     return render(request, 'agileHR/training_detail.html', context)
 
+def training_edit(request):
+    context={}
+    return render(request, 'agileHR/training_form.html', context)
 
-def computer(request):
+def training_add(request):
+    """Displays form to add a new training session
+
+    Author: Kelly Morin
+
+    Returns:
+        render -- returns the training form template, an error message to be displayed or the training template with the new training session added
+    """
+
+    if request.method == 'POST':
+        try:
+            title= request.POST['training_title']
+            start_date = request.POST['start_date']
+            end_date = request.POST['end_date']
+            max_attendees = request.POST['max_attendees']
+            if title == '' or start_date == '' or end_date == '' or max_attendees == '':
+                return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
+            else:
+                new_training = Training(title=title, start_date=start_date, end_date=end_date, max_attendees=max_attendees)
+                new_training.save()
+                return HttpResponseRedirect(reverse('agileHR:training'))
+        except KeyError:
+            return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
+    else:
+        context={}
+        return render(request, 'agileHR/training_form.html', context)
+
+
+def computers(request):
     """Displays the list of computers currently owned by the company with links to details for each one.
 
     Author: Sebastian Civarolo
@@ -181,7 +212,7 @@ def computer(request):
     context = {
         "computers": computers
     }
-    return render(request, 'agileHR/computer.html', context)
+    return render(request, 'agileHR/computers.html', context)
 
 
 def computer_detail(request, computer_id):
@@ -201,3 +232,41 @@ def computer_detail(request, computer_id):
     }
 
     return render(request, "agileHR/computer_detail.html", context)
+
+
+def new_computer(request):
+    """Displays the form to add a new computer, and checks for all inputs before saving to the database.
+
+    Author: Sebastian Civarolo
+
+    Returns:
+        render -- Returns the form with an error message, or if successful, returns the new detail page.
+    """
+
+    if request.method == "POST":
+
+        try:
+            make = request.POST["make"]
+            model = request.POST["model"]
+            serial_no = request.POST["serial_no"]
+            purchase_date = request.POST["purchase_date"]
+
+            if make is "" or model is "" or serial_no is "" or purchase_date is "":
+                return render(request, "agileHR/computer_new.html", {
+                    "error_message": "Please fill out all fields",
+                    "make": make,
+                    "model": model,
+                    "serial_no": serial_no,
+                    "purchase_date": purchase_date
+                })
+            else:
+                new_computer = Computer(make=make, model=model, serial_no=serial_no, purchase_date=purchase_date)
+                new_computer.save()
+                return HttpResponseRedirect(reverse("agileHR:computer_detail", args=(new_computer.id,)))
+        except KeyError:
+            return render(request, "agileHR/computer_new.html", {
+                "error_message": "Please fill out all fields"
+            })
+    else:
+        context = {}
+        return render(request, "agileHR/computer_new.html", context)

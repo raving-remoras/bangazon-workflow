@@ -12,10 +12,15 @@ urlpatterns = [
     path("departments/<int:dept_id>/", views.department_detail, name="department_detail"),
     path("trainings/", views.training, name="training"),
     # ex: /bangazon/trainings/5
-    path("trainings/<int:training_id>", views.traindetail, name="traindetail"),
+    path("trainings/<int:training_id>", views.training_detail, name="traindetail"),
+    # ex: /bangazon/trainings/edit
+    path("trainings/edit", views.training_edit, name="training_edit"),
+    # ex: /bangazon/trainings/add
+    path("trainings/add", views.training_add, name="training_add"),
     # ex: /bangazon/computers/
-    path("computers/", views.computer, name="computer"),
+    path("computers/", views.computers, name="computers"),
     # ex: /bangazon/computers/12
-    path("computers/<int:computer_id>", views.computer_detail, name="computer_detail")
+    path("computers/<int:computer_id>/", views.computer_detail, name="computer_detail"),
+    # ex: /bangazon/computers/new
+    path("computers/new/", views.new_computer, name="new_computer")
 ]
-
