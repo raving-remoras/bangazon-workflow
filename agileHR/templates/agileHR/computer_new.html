@@ -23,9 +23,15 @@
             <label for="model">Model:</label>
             <input class="form-control" type="text" name="model" id="model">
           </div>
-          <div class="form-group">
-            <label for="serial_no">Serial No:</label>
-            <input class="form-control" type="text" name="serial_no" id="serial_no">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="serial_no">Serial No:</label>
+              <input class="form-control" type="text" name="serial_no" id="serial_no">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="purchase_date">Purchase Date:</label>
+              <input class="form-control" type="date" name="purchase_date" id="purchase_date" max="{% now 'Y-m-d' %}" value="{% now 'Y-m-d' %}">
+            </div>
           </div>
 
           <button type="submit" class="btn btn-primary">Add Computer</button>

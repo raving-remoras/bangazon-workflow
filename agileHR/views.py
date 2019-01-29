@@ -140,14 +140,14 @@ def new_computer(request):
     """
 
     if request.method == "POST":
-        print("REQUEST", request.POST)
+
         try:
             make = request.POST["make"]
             model = request.POST["model"]
             serial_no = request.POST["serial_no"]
-            purchase_date = datetime.datetime.now()
+            purchase_date = request.POST["purchase_date"]
 
-            if make is "" or model is "" or serial_no is "":
+            if make is "" or model is "" or serial_no is "" or purchase_date is "":
                 return render(request, "agileHR/computer_new.html", {
                     "error_message": "Please fill out all fields"
                 })

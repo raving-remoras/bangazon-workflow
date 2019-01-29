@@ -18,4 +18,3 @@ urlpatterns = [
     # ex: /bangazon/computers/new
     path("computers/new/", views.new_computer, name="new_computer")
 ]
-
