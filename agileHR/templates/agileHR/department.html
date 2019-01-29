@@ -3,7 +3,7 @@
 
 {% block content %}
     <h2>Departments</h2>
-    <h5><a href="">Create New</a></h5>
+    <h5><a href="{% url 'agileHR:departmentadd' %}">Create New</a></h5>
     <ul>
         {% for dept in departments %}
             <li>
