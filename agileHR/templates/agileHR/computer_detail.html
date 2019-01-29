@@ -27,6 +27,9 @@
       {% endif %}
       </h4>
 
+      <a href="{% url 'agileHR:delete_computer' computer.id %}">
+        <button class="btn btn-primary" type="button">Delete Computer</button>
+      </a>
     </div>
   </div>
 {% endblock %}

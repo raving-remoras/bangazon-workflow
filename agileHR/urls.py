@@ -20,6 +20,8 @@ urlpatterns = [
     path("computers/", views.computers, name="computers"),
     # ex: /bangazon/computers/12
     path("computers/<int:computer_id>/", views.computer_detail, name="computer_detail"),
+    path("computers/<int:computer_id>/delete", views.delete_computer, name="delete_computer"),
     # ex: /bangazon/computers/new
     path("computers/new/", views.new_computer, name="new_computer")
+
 ]
