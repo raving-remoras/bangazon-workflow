@@ -7,7 +7,7 @@ urlpatterns = [
     path("employees/", views.employee, name="employee"),
     path("employees/<int:employee_id>/", views.employee_detail, name="employee_detail"),
     path("departments/", views.department, name="department"),
-    # ex: /bangazon/trainings/
+    path("departments/<int:dept_id>/", views.department_detail, name="department_detail"),
     path("trainings/", views.training, name="training"),
     # ex: /bangazon/trainings/5
     path("trainings/<int:training_id>", views.traindetail, name="traindetail"),
