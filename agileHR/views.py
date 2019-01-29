@@ -45,7 +45,7 @@ def employee_add(request):
         render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
         HttpResponseRedirect -- loads the employee page if add was successful
     """
-    departments = Department.objects.all()
+    departments = Department.objects.order_by('name')
 
     if request.method == "POST":
         try:
