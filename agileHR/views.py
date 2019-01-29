@@ -116,7 +116,7 @@ def training(request):
     return render(request, "agileHR/training.html", context)
 
 
-def traindetail(request, training_id):
+def training_detail(request, training_id):
     """Displays the details about a single training session hosted by the company
 
     Author: Kelly Morin
@@ -132,6 +132,37 @@ def traindetail(request, training_id):
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
     context = {'training_details': training_details, 'attendee_size': attendee_size}
     return render(request, 'agileHR/training_detail.html', context)
+
+def training_edit(request):
+    context={}
+    return render(request, 'agileHR/training_form.html', context)
+
+def training_add(request):
+    """Displays form to add a new training session
+
+    Author: Kelly Morin
+
+    Returns:
+        render -- returns the training form template, an error message to be displayed or the training template with the new training session added
+    """
+
+    if request.method == 'POST':
+        try:
+            title= request.POST['training_title']
+            start_date = request.POST['start_date']
+            end_date = request.POST['end_date']
+            max_attendees = request.POST['max_attendees']
+            if title == '' or start_date == '' or end_date == '' or max_attendees == '':
+                return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
+            else:
+                new_training = Training(title=title, start_date=start_date, end_date=end_date, max_attendees=max_attendees)
+                new_training.save()
+                return HttpResponseRedirect(reverse('agileHR:training'))
+        except KeyError:
+            return render(request, 'agileHR/training_form.html', {'error_message': "You must complete all fields in the form"})
+    else:
+        context={}
+        return render(request, 'agileHR/training_form.html', context)
 
 
 def computer(request):
