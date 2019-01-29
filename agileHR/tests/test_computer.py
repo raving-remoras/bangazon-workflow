@@ -91,7 +91,7 @@ class ComputerTest(TestCase):
 
         response = self.client.get(reverse('agileHR:new_computer'))
 
-        self.assertIn('<input class="form-control" type="text" name="make" id="make">'.encode(), response.content)
+        self.assertIn('<input class="form-control" type="text" name="make" id="make"'.encode(), response.content)
 
 
     def test_post_new_computer(self):
