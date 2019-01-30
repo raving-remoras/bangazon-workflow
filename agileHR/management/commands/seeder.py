@@ -57,11 +57,19 @@ class Command(BaseCommand):
         #     "max_attendees": lambda x: seeder.faker.word(ext_word_list=max_attendees),
         # })
 
-        seeder.add_entity(Training, 20, {
+        seeder.add_entity(Training, 30, {
             "title":lambda x: seeder.faker.catch_phrase(),
-            "start_date":lambda x: seeder.faker.future_datetime(end_date="+60d"),
-            "end_date":lambda x: seeder.faker.future_datetime(end_date="+90d"),
             "max_attendees": lambda x: seeder.faker.word(ext_word_list=max_attendees),
+            lambda x: random.choice([
+                {
+                    "start_date": seeder.faker.future_datetime(end_date="+60d"),
+                    "end_date": seeder.faker.future_datetime(end_date="+90d")
+                },
+                {
+                    "start_date":seeder.faker.past_datetime(start_date="-60d"),
+                    "end_date": seeder.faker.past_datetime(end_date="-30d")
+                },
+            ])
         })
 
         # seeder data for Employee Training Join Table
