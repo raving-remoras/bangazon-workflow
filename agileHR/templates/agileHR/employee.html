@@ -1,8 +1,18 @@
 {% extends "agileHR/index.html" %}
 
 {% block content %}
-<div class="text-center"><h2 >Employees</h2></div>
 
+{% if messages %}
+
+ <div class="messages" >
+        {% for message in messages %}
+        <div class="{{ message.tags }} alert alert-success" role="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="text-center"><h2 >Employees</h2></div>
+<div class="text-center my-3"><a class="btn btn-primary" href="{% url 'agileHR:employee_add' %}" role="button">New Employee</a></div>
 <div class="list-group">
   {% for employee in employee_list %}
   <a href="{% url 'agileHR:employee_detail' employee.id %}" class="list-group-item list-group-item-action">
