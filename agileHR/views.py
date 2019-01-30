@@ -229,9 +229,13 @@ def computer_detail(request, computer_id):
     """
 
     computer = get_object_or_404(Computer, pk=computer_id)
+    current_assignment = EmployeeComputer.objects.filter(computer_id=computer_id).filter(date_revoked=None)
+    assignment_history = EmployeeComputer.objects.filter(computer_id=computer_id).exclude(date_revoked=None).order_by('-date_assigned')
 
     context = {
-        "computer": computer
+        "computer": computer,
+        "current_assignment": current_assignment,
+        "assignment_history": assignment_history
     }
 
     return render(request, "agileHR/computer_detail.html", context)
