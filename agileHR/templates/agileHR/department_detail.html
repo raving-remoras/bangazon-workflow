@@ -1,15 +1,32 @@
 {% extends "agileHR/index.html" %}
 
 {% block content %}
-    <h2>{{department.name|upper}}</h2>
-    <h5>Current Employees:</h5>
-    <ul>
+<div class="card mx-auto" style="width: 50 rem;">
+    <div class="card-body">
+        <div class="card-title">
+            <div class="text-center"><h2>{{department.name|upper}}</h2></div>
+        </div>
+    <h5><a class="btn btn-outline-secondary" href="{% url 'agileHR:department' %}">Go Back</a></h5>
+    <div class="list-group-item bg-light">
+        <div class="d-flex w-100 justify-content-between">
+            <h4>Current Employees:</h4>
+        </div>
+    </div>
         {% if employees %}
             {% for emp in employees %}
-                <li>{{emp.first_name}} {{emp.last_name}}</li>
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <p class="mb-1">{{emp.last_name}}, {{emp.first_name}}</p>
+                    </div>
+                </div>
             {% endfor %}
         {% else %}
-            <li>No employees are assigned to this department.</li>
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <p class="mb-1">No employees are assigned to this department.</p>
+                </div>
+            </div>
         {% endif %}
-    </ul>
+    </div>
+</div>
 {% endblock content %}

@@ -2,20 +2,31 @@
 {% load humanize %}
 
 {% block content %}
-    <h2>Departments</h2>
-    <h5><a href="{% url 'agileHR:departmentadd' %}">Create New</a></h5>
-    <ul>
-        {% for dept in departments %}
-            <li>
-                <a href="{% url 'agileHR:department_detail' dept.id %}">{{dept.name|upper}}</a><br />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Budget: ${{dept.budget|intcomma}}<br />
-                    {% for dept_ in dept_size %}
-                        {% if dept_.id == dept.id %}
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Size: {{dept_.count}}
-                        {% endif %}
-
-                    {% endfor %}
-            </li>
-        {% endfor %}
-    </ul>
+<div class="card mx-auto" style="width: 50 rem;">
+    <div class="card-body">
+        <div class="card-title">
+            <div class="text-center"><h2>Departments</h2></div>
+        </div>
+        <h5><a href="{% url 'agileHR:departmentadd' %}">
+                <button type="button" class="btn btn-outline-secondary">
+                    Add New Department
+                </button>
+            </a>
+        </h5>
+        <div class="list-group">
+            {% for dept in departments %}
+                <a href="{% url 'agileHR:department_detail' dept.id %}" class="list-group-item list-group-item-action">{{dept.name|upper}}<br />
+                    <div class="d-flex w-100 justify-content-between">
+                        <p class="mb-1">Budget: ${{dept.budget|intcomma}}</p><br />
+                        {% for dept_ in dept_size %}
+                            {% if dept_.id == dept.id %}
+                                <p class="mb-1">Size: {{dept_.count}}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock content %}

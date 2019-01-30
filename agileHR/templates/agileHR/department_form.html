@@ -2,40 +2,29 @@
 
 {% block content %}
 
-<h1>Add New Department</h1>
+<div class="card mx-auto" style="width: 50 rem;">
+    <div class="card-body">
+        <div class="card-title">
+            <div class="text-center"><h2>Add New Department</h2></div>
+        </div>
 
-{% if error_message %}<p style="color:red"><strong>{{ error_message }}</strong></p>{% endif %}
-
-{% if name or budget %}
-
-    <form action="{% url 'agileHR:departmentadd' %}" method="POST">
-    {% csrf_token %}
-        <label for='dept_name'>Department Name</label>
-        <input type='text' name='dept_name' value="{{name}}" />
-        <br />
-        <br />
-        <label for='dept_budget'>Department Budget</label>
-        <input type='number' name='dept_budget' value="{{budget}}" />
-        <br />
-        <br />
-        <button type='submit'>Save Department</button>
-    </form>
-
-{% else %}
+{% if error_message %}<p class="alert alert-danger">{{ error_message }}</p>{% endif %}
 
     <form action="{% url 'agileHR:departmentadd' %}" method="POST">
     {% csrf_token %}
-        <label for='name'>Department Name</label>
-        <input type='text' name='dept_name' />
+        <label for="dept_name">Department Name</label>
+        <input type="text" name="dept_name" class="form-control" value="{{name}}" />
         <br />
         <br />
-        <label for='dept_budget'>Department Budget</label>
-        <input type='number' name='dept_budget' />
+        <label for="dept_budget">Department Budget ($)</label>
+        <input type="number" name="dept_budget" class="form-control" value="{{budget}}" />
         <br />
         <br />
-        <button type='submit'>Save Department</button>
+        <button type="submit" class="btn btn-outline-secondary">Save Department</button>
+        <a class="btn btn-outline-secondary" href="{% url 'agileHR:department' %}">Go Back</a>
     </form>
 
-{% endif %}
+    </div>
+</div>
 
 {% endblock content %}
