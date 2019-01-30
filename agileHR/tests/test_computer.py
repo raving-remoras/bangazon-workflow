@@ -97,13 +97,13 @@ class ComputerTest(TestCase):
     def test_post_new_computer(self):
         """Tests posting a new computer from the new_computer view."""
 
-        response = self.client.post(reverse('agileHR:new_computer'), {
+        response = self.client.post(reverse("agileHR:new_computer"), {
             "make": "Make",
             "model": "Model",
             "serial_no": '123456',
             "purchase_date": datetime.datetime.now()})
 
-        get_response = self.client.get(reverse('agileHR:computer_detail', args=(1,)))
+        get_response = self.client.get(reverse("agileHR:computer_detail", args=(1,)))
 
         # Getting 302 when we have a success url and the view is redirecting, but sometimes 200?
         self.assertIn(response.status_code, [302, 200])
@@ -111,3 +111,34 @@ class ComputerTest(TestCase):
         self.assertEqual(get_response.status_code, 200)
 
 
+    def test_view_delete_computer(self):
+        """Tests that the delete confirmation page loads correctly."""
+
+        response = self.client.post(reverse("agileHR:new_computer"), {
+            "make": "Make",
+            "model": "Model",
+            "serial_no": '123456',
+            "purchase_date": datetime.datetime.now()})
+
+        response = self.client.get(reverse("agileHR:delete_computer", args=(1,)))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Are you sure you want to delete".encode(), response.content)
+
+
+    def test_delete_computer(self):
+        """Tests deleting the computer from the database"""
+
+        response = self.client.post(reverse("agileHR:new_computer"), {
+            "make": "Make",
+            "model": "Model",
+            "serial_no": '123456',
+            "purchase_date": datetime.datetime.now()})
+
+        # delete the computer
+        response = self.client.post(reverse("agileHR:delete_computer", args=(1,)))
+        self.assertEqual(response.status_code, 302)
+
+        # confirm the computer is deleted
+        computer = Computer.objects.filter(pk=1)
+        self.assertEqual(len(computer), 0)

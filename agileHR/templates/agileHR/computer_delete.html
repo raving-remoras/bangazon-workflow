@@ -1,0 +1,32 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="column mb-4">
+      <h1>Delete</h1>
+    </div>
+  </div>
+
+  {% if can_delete %}
+    <div class="row">
+      <div class="column">
+        <h3>Are you sure you want to delete {{ computer.make }} {{ computer.model }}?</h3>
+        <div class="my-4">
+          <form action="{% url 'agileHR:delete_computer' computer.id %}" method="POST">{% csrf_token %}<button type="submit" class="btn btn-danger">Yes, Delete it.</button>
+          <a href="{% url 'agileHR:computer_detail' computer.id %}"><button type="button" class="btn btn-primary">No, take me back.</button></a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="column">
+        <h3>{{ computer.make }} {{ computer.model }} cannot be deleted.</h3>
+        <p>This computer is currently assigned or has been previously assigned to an employee.
+        <div class="my-4">
+          <a href="{% url 'agileHR:computer_detail' computer.id %}"><button type="button" class="btn btn-primary">Take me back.</button></a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock %}
