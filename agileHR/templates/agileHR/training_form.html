@@ -4,27 +4,35 @@
 <div class="card mx-auto" style="width: 50 rem;">
   <div class="card-body">
     <h2 class="card-title">
-      Add New Training Session
+      {{title}}
     </h2>
     <div class="card-text">
-      {% if error_message %}<p style="color:red"><strong>{{error_message}}</strong></p>{% endif %}
-      <form action="{% url 'agileHR:training_add' %}" method="POST">
+      {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+          {{error_message}}
+        </div>
+      {% endif %}
+      {% if form_detail == "new" %}
+        <form action="{% url 'agileHR:training_add' %}" method="POST">
+      {% elif form_detail == "edit" %}
+        <form action="{% url 'agileHR:training_edit' training_details.id %}" method="POST">
+      {% endif %}
         {% csrf_token %}
         <div class="form-group">
           <label for="title">Title</label>
-          <input type="text" class="form-control" name="training_title"/>
+          <input type="text" class="form-control" name="training_title" value="{{training_details.title}}"/>
         </div>
         <div class="form-group">
           <label for="start_date">Start Date</label>
-          <input type="date" class="form-control" name="start_date" />
+          <input type="date" class="form-control" name="start_date" value="{{training_details.start_date | date:'Y-m-d' }}"/>
         </div>
         <div class="form-group">
           <label for="end_date">End Date</label>
-          <input type="date" class="form-control" name="end_date" />
+          <input type="date" class="form-control" name="end_date" value="{{training_details.end_date | date:'Y-m-d'}}"/>
         </div>
         <div class="form-group">
           <label for="max_attendees">Maximum Attendees</label>
-          <input type="number" class="form-control" name="max_attendees"/>
+          <input type="number" class="form-control" name="max_attendees" value="{{training_details.max_attendees}}"/>
         </div>
         <div>
           <button type="submit" class="btn btn-outline-secondary">Save</button>

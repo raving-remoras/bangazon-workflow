@@ -78,21 +78,21 @@ class TrainingTest(TestCase):
         # Employee first name appears in HTML response content
         self.assertIn(new_employee.first_name.encode(), response.content)
 
-    def test_display_form(self):
-        """Test case verifies that all required input fields have been correctly rendered when a form is requested"""
+    def test_display_add_form(self):
+        """Test case verifies that all required input fields have been correctly rendered when an add form is requested"""
         response = self.client.get(reverse('agileHR:training_add'))
 
         # Training title input field appears in HTML response content
-        self.assertIn('<input type="text" class="form-control" name="training_title"/>'.encode(), response.content)
+        self.assertIn('<input type="text" class="form-control" name="training_title" value=""/>'.encode(), response.content)
 
         # Training start date input field appears in HTML response content
-        self.assertIn('<input type="date" class="form-control" name="start_date" />'.encode(), response.content)
+        self.assertIn('<input type="date" class="form-control" name="start_date" value=""/>'.encode(), response.content)
 
         # Training end date input field appears in HTML response content
-        self.assertIn(' <input type="date" class="form-control" name="end_date" />'.encode(), response.content)
+        self.assertIn(' <input type="date" class="form-control" name="end_date" value=""/>'.encode(), response.content)
 
         # Training maximum attendees input field appears in HTML response content
-        self.assertIn('<input type="number" class="form-control" name="max_attendees"/>'.encode(), response.content)
+        self.assertIn('<input type="number" class="form-control" name="max_attendees" value=""/>'.encode(), response.content)
 
     def test_new_training(self):
         """Test case verifies that when a POST operation is performed to the corresponding URL, a successful response is recieved."""
@@ -104,6 +104,47 @@ class TrainingTest(TestCase):
             "end_date": future_date,
             "max_attendees": 41
         })
+
+        # Checks that the response is 200 ok
+        self.assertEqual(response.status_code, 200)
+
+    def test_display_edit_form(self):
+        """Test case verifies that all required input fields have been correctly rendered when a edit form is requested"""
+        future_date = datetime.now(tz=None)+ timedelta(days=2)
+
+        new_training = Training.objects.create(
+            title="Test Training",
+            start_date= datetime.now(tz=None),
+            end_date= future_date,
+            max_attendees= 41
+        )
+        response = self.client.get(reverse('agileHR:training_edit', args=(1,)))
+
+        # Training title input field appears in HTML response content
+        self.assertIn('<input type="text" class="form-control" name="training_title" value="Test Training"/>'.encode(), response.content)
+
+        # Training start date input field appears in HTML response content
+        self.assertIn('<input type="date" class="form-control" name="start_date" value="2019-01-30"/>'.encode(), response.content)
+
+        # Training end date input field appears in HTML response content
+        self.assertIn('<input type="date" class="form-control" name="end_date" value="2019-02-01"/>'.encode(), response.content)
+
+        # Training maximum attendees input field appears in HTML response content
+        self.assertIn('<input type="number" class="form-control" name="max_attendees" value="41"/>'.encode(), response.content)
+
+
+    def test_edit_training(self):
+        """Test case verifies that when a PUT operation is performed to the corresponding URL, a successful response is recieved"""
+        future_date = datetime.now(tz=None)+ timedelta(days=2)
+
+        new_training = Training.objects.create(
+            title="Test Training",
+            start_date= datetime.now(tz=None),
+            end_date= future_date,
+            max_attendees= 41
+        )
+
+        response = self.client.get(reverse('agileHR:training_edit', args=(1,)))
 
         # Checks that the response is 200 ok
         self.assertEqual(response.status_code, 200)
