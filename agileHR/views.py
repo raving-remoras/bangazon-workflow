@@ -177,14 +177,15 @@ def training_edit(request, training_id):
     if request.method == 'POST':
         try:
             title = request.POST['training_title']
-            start_date = request.POST['start_date']
+            start_date = (request.POST["start_date"])
             end_date = request.POST['end_date']
             max_attendees = request.POST['max_attendees']
+            print(start_date)
             if title is '' or start_date is'' or end_date is '' or max_attendees is '':
                 if start_date is '':
                     new_start_date = training_details.start_date,
                 else:
-                    new_start_date = datetime.strptime(start_date)
+                    new_start_date = start_date
                 if end_date is '':
                     new_end_date = training_details.end_date,
                 else:
