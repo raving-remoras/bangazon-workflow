@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -116,36 +116,22 @@ def training_add(request):
         return render(request, 'agileHR/training_form.html', context)
 
 def training_delete(request, training_id):
-    # delete training from DB
     if request.method == 'POST':
-        print("this")
+        training = Training.objects.get(pk=training_id)
+        training.delete()
+        return HttpResponseRedirect(reverse("agileHR:training"))
+    else:
+        training = Training.objects.get(pk=training_id)
 
-# def delete_computer(request, computer_id):
-#     """Deletes a computer ONLY if it has NEVER been assigned to an employee.
+        if training.end_date.date() > date.today():
+            context = {
+                "training": training,
+                "can_delete": True
+            }
+        else:
+            context = {
+                "training": training,
+                "can_delete": False
+            }
 
-#         Arguments:
-#             computer_id {int} -- the ID of the computer to be deleted.
-
-#         Author: Sebastian Civarolo
-#     """
-
-#     if request.method == "POST":
-#         computer = Computer.objects.get(pk=computer_id)
-#         computer.delete()
-#         return HttpResponseRedirect(reverse("agileHR:computers"))
-
-#     else:
-#         computer = Computer.objects.get(pk=computer_id)
-#         assignments = EmployeeComputer.objects.filter(computer_id=computer_id)
-
-#         if len(assignments) == 0:
-#             context = {
-#                 "computer": computer,
-#                 "can_delete": True
-#             }
-#         else :
-#             context = {
-#                 "computer": computer,
-#                 "can_delete": False
-#             }
-#         return render(request, "agileHR/computer_delete.html", context)
+        return render(request, 'agileHR/training_delete.html', context)
