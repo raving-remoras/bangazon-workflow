@@ -15,7 +15,12 @@ def training(request):
     """
 
     training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by("start_date")
-    context = {"training_list": training_list, "view": "upcoming"}
+
+    context = {
+        "training_list": training_list,
+        "view": "upcoming"
+    }
+
     return render(request, "agileHR/training.html", context)
 
 
@@ -29,7 +34,12 @@ def training_past(request):
     """
 
     training_list = Training.objects.filter(end_date__date__lte=datetime.date.today()).order_by("start_date")
-    context = {"training_list": training_list, "view": "past"}
+
+    context = {
+        "training_list": training_list,
+        "view": "past"
+    }
+
     return render(request, "agileHR/training.html", context)
 
 
@@ -50,7 +60,13 @@ def training_detail(request, training_id):
     future = True
     if training_details.start_date <= now:
         future = False
-    context = {"training_details": training_details, "attendee_size": attendee_size, "future": future}
+
+    context = {
+        "training_details": training_details,
+        "attendee_size": attendee_size,
+        "future": future
+    }
+
     return render(request, "agileHR/training_detail.html", context)
 
 
@@ -70,12 +86,15 @@ def training_edit(request, training_id):
 
     training_details = get_object_or_404(Training, pk=training_id)
     if request.method == "POST":
+
         try:
             title = request.POST["training_title"]
             start_date = request.POST["start_date"]
             end_date = request.POST["end_date"]
             max_attendees = request.POST["max_attendees"]
+
             if title is "" or start_date is "" or end_date is "" or max_attendees is "":
+
                 # If start date or end date are the fields that are left blank upon submit, repopulate the form with the data currently in the database, otherwise create a datetime object from the string passed in by the form
                 if start_date is "":
                     new_start_date = training_details.start_date
@@ -115,9 +134,15 @@ def training_edit(request, training_id):
                 "error_message": "You must complete all fields in the form",
                 "title": "Edit Training Session",
                 "form_detail": "edit",
-                "training_details": training_details})
+                "training_details": training_details
+            })
     else:
-        context={"training_details": training_details, "title": "Edit Training Session" , "form_detail": "edit" }
+        context={
+            "training_details": training_details,
+            "title": "Edit Training Session" ,
+            "form_detail": "edit"
+        }
+
         return render(request, "agileHR/training_form.html", context)
 
 
@@ -133,19 +158,29 @@ def training_add(request):
     """
 
     if request.method == "POST":
+
         try:
             title= request.POST["training_title"]
             start_date = request.POST["start_date"]
             end_date = request.POST["end_date"]
             max_attendees = request.POST["max_attendees"]
+
             if title is "" or start_date is "" or end_date is "" or max_attendees is "":
-                return render(request, "agileHR/training_form.html", {"error_message": "You must complete all fields in the form"})
+                return render(request, "agileHR/training_form.html", {
+                    "error_message": "You must complete all fields in the form"
+                })
             else:
                 new_training = Training(title=title, start_date=start_date, end_date=end_date, max_attendees=max_attendees)
                 new_training.save()
                 return HttpResponseRedirect(reverse("agileHR:training"))
         except KeyError:
-            return render(request, "agileHR/training_form.html", {"error_message": "You must complete all fields in the form"})
+            return render(request, "agileHR/training_form.html", {
+                "error_message": "You must complete all fields in the form"
+            })
     else:
-        context={"title": "Add New Training Session" , "form_detail": "new"}
+        context={
+            "title": "Add New Training Session" ,
+            "form_detail": "new"
+        }
+
         return render(request, "agileHR/training_form.html", context)
