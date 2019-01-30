@@ -54,6 +54,7 @@ def training_detail(request, training_id):
     Returns:
         render -- Returns the training_detail template
     """
+
     now = datetime.datetime.now(timezone.utc)
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
