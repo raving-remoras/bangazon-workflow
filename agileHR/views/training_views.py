@@ -33,7 +33,7 @@ def training_past(request):
         render -- returns the training template
     """
 
-    training_list = Training.objects.filter(end_date__date__lte=datetime.date.today()).order_by("start_date")
+    training_list = Training.objects.filter(end_date__date__lt=datetime.date.today()).order_by("-start_date")
 
     context = {
         "training_list": training_list,

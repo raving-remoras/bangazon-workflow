@@ -23,6 +23,13 @@
                 <p class="mb-1">Start Date: {{training.start_date | date:'l, F d, Y'}}</p>
               </a>
             {% endfor %}
+            {% if view == 'upcoming' %}
+              <a href="{% url 'agileHR:training_past' %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">View Past Programs</h5>
+                </div>
+              </a>
+            {% endif %}
           {% else %}
             <p>No Trainings are currently scheduled</p>
           {% endif %}
