@@ -24,7 +24,7 @@
                     <p class="mb-1">No employees currently registered for this training session</p>
                 {% endif %}
                 {% for employee in training_details.employeetraining_set.all %}
-                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <a href="{% url 'agileHR:employee_detail' employee.employee.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">{{employee.employee.first_name}} {{employee.employee.last_name}}</h5>
                         </div>
