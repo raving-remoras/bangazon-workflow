@@ -15,6 +15,12 @@
                 <p>Max Attendees: {{training_details.max_attendees}} | Available Seats: {{training_details.max_attendees|sub:attendee_size}} </p>
                 <div>
                     <a href="{% url 'agileHR:training_edit' training_details.id %}"><button type="button" class="btn btn-outline-secondary">Edit Details</button></a>
+
+                    {% now "Y-m-d" as todays_date %}
+                    {% if todays_date < training_details.end_date|date:"Y-m-d" %}
+                        <a href="{% url 'agileHR:training_delete' training_details.id %}"><button type="button" class="btn btn-outline-secondary">Delete Training</button></a>
+                    {% endif %}
+                    
                     <a href="{% url 'agileHR:training' %}"><button type="button" class="btn btn-outline-secondary">View all Training Sessions</button></a>
                 </div>
             </div>

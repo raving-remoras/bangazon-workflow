@@ -115,3 +115,37 @@ def training_add(request):
         context={'title': "Add New Training Session" , 'form_detail': "new"}
         return render(request, 'agileHR/training_form.html', context)
 
+def training_delete(request, training_id):
+    # delete training from DB
+    if request.method == 'POST':
+        print("this")
+
+# def delete_computer(request, computer_id):
+#     """Deletes a computer ONLY if it has NEVER been assigned to an employee.
+
+#         Arguments:
+#             computer_id {int} -- the ID of the computer to be deleted.
+
+#         Author: Sebastian Civarolo
+#     """
+
+#     if request.method == "POST":
+#         computer = Computer.objects.get(pk=computer_id)
+#         computer.delete()
+#         return HttpResponseRedirect(reverse("agileHR:computers"))
+
+#     else:
+#         computer = Computer.objects.get(pk=computer_id)
+#         assignments = EmployeeComputer.objects.filter(computer_id=computer_id)
+
+#         if len(assignments) == 0:
+#             context = {
+#                 "computer": computer,
+#                 "can_delete": True
+#             }
+#         else :
+#             context = {
+#                 "computer": computer,
+#                 "can_delete": False
+#             }
+#         return render(request, "agileHR/computer_delete.html", context)
