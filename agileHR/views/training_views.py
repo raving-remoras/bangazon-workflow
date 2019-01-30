@@ -59,7 +59,7 @@ def training_detail(request, training_id):
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
     future = True
-    if training_details.start_date <= now:
+    if training_details.start_date < now:
         future = False
 
     context = {

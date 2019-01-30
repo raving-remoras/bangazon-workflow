@@ -29,6 +29,12 @@
                   <h5 class="mb-1">View Past Programs</h5>
                 </div>
               </a>
+            {% else %}
+              <a href="{% url 'agileHR:training' %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">View Upcoming Programs</h5>
+                </div>
+              </a>
             {% endif %}
           {% else %}
             <p>No Trainings are currently scheduled</p>
