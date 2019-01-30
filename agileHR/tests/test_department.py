@@ -115,8 +115,8 @@ class DepartmentPostTest(TestCase):
         response = self.client.get(reverse('agileHR:departmentadd'))
 
         # verify that the content of the response has the required input fields.
-        self.assertIn("<input type='text' name='dept_name' />".encode(), response.content)
-        self.assertIn("<input type='number' name='dept_budget' />".encode(), response.content)
+        self.assertIn('input type="text" name="dept_name" class="form-control"'.encode(), response.content)
+        self.assertIn('<input type="number" name="dept_budget" class="form-control"'.encode(), response.content)
 
     def test_department_post(self):
 
