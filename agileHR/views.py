@@ -277,9 +277,13 @@ def computer_detail(request, computer_id):
     """
 
     computer = get_object_or_404(Computer, pk=computer_id)
+    current_assignment = EmployeeComputer.objects.filter(computer_id=computer_id).filter(date_revoked=None)
+    assignment_history = EmployeeComputer.objects.filter(computer_id=computer_id).exclude(date_revoked=None).order_by('-date_assigned')
 
     context = {
-        "computer": computer
+        "computer": computer,
+        "current_assignment": current_assignment,
+        "assignment_history": assignment_history
     }
 
     return render(request, "agileHR/computer_detail.html", context)
@@ -321,3 +325,34 @@ def new_computer(request):
     else:
         context = {}
         return render(request, "agileHR/computer_new.html", context)
+
+
+def delete_computer(request, computer_id):
+    """Deletes a computer ONLY if it has NEVER been assigned to an employee.
+
+        Arguments:
+            computer_id {int} -- the ID of the computer to be deleted.
+
+        Author: Sebastian Civarolo
+    """
+
+    if request.method == "POST":
+        computer = Computer.objects.get(pk=computer_id)
+        computer.delete()
+        return HttpResponseRedirect(reverse("agileHR:computers"))
+
+    else:
+        computer = Computer.objects.get(pk=computer_id)
+        assignments = EmployeeComputer.objects.filter(computer_id=computer_id)
+
+        if len(assignments) == 0:
+            context = {
+                "computer": computer,
+                "can_delete": True
+            }
+        else :
+            context = {
+                "computer": computer,
+                "can_delete": False
+            }
+        return render(request, "agileHR/computer_delete.html", context)

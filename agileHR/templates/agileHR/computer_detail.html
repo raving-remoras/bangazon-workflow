@@ -17,16 +17,30 @@
         <p>{{computer.retire_date}}</p>
       {% endif %}
 
-      <h4>Assigned to:
-      {% if computer.employeecomputer_set.all %}
-        {% for rel in computer.employeecomputer_set.all %}
-          {{ rel.employee.first_name }} {{ rel.employee.last_name }}{% if not forloop.last %}, {% endif %}
+      <h4>Currently assigned to:
+      {% if current_assignment %}
+        {% for person in current_assignment %}
+          {{person.employee.first_name}} {{person.employee.last_name}}
         {% endfor %}
       {% else %}
-      Available
+        <span class="text-success">Available</span>
+      {% endif %}
+
+      {% if assignment_history %}
+      <h5>Assignment History</h5>
+        <ul>
+        {% for assignment in assignment_history %}
+          <li>{{ assignment.employee.first_name }} {{ assignment.employee.last_name }}<br>
+            {{assignment.date_assigned}} – {{assignment.date_revoked}}
+          </li>
+        {% endfor %}
+        </ul>
       {% endif %}
       </h4>
 
+      <a href="{% url 'agileHR:delete_computer' computer.id %}">
+        <button class="btn btn-primary" type="button">Delete Computer</button>
+      </a>
     </div>
   </div>
 {% endblock %}
