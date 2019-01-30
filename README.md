@@ -26,6 +26,12 @@
 - Alternatively, the user can click <em>Go Back</em> to return to the departments list without saving new data.
 
 ## Trainings
+- Training sessions can be accessed via the navbar. A list of all training sessions' titles and start date is visible.
+- Clicking <em>Add New Training</em> will open a form that prompts the user to submit a new training session title, start and end date and maximum number of attendees. Saving the session will return the user to the list of training sesssions. The user can find their training session in the list sorted by date.
+- Alternatively, the user can click <em>Go Back</em> to return to the training session list without saving new data.
+- Clicking on a training session will display the training sessions title, start and end date, maximum number of attendees, available seats as well as a list of all employees that are currently registered for that session. The user can return to the training session list by clicking <em>View all Training Sessions</em>.
+- The user can click <em>Edit Details</em> button to be taken to a form that allows the user to edit the details of the training session. Upon saving the session, the user will be returned to the updated training session detail page where their changes will be displayed.
+- Alternatively, the user can select <em>Go Back</em> to return to the training session list without saving changes.
 
 
 ## Computers
