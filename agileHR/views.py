@@ -178,12 +178,21 @@ def training_edit(request, training_id):
             start_date = request.POST["start_date"]
             end_date = request.POST['end_date']
             max_attendees = request.POST['max_attendees']
-            print(type(start_date))
             if title is '' or start_date is '' or end_date is '' or max_attendees is '':
-                new_start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d')
-                new_end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
-                print(new_start_date)
-                print(type(new_start_date))
+                # If start date or end date are the fields that are left blank upon submit, repopulate the form with the data currently in the database, otherwise create a datetime object from the string passed in by the form
+                if start_date is '':
+                    new_start_date = training_details.start_date
+                    if end_date is '':
+                        new_end_date = training_details.end_date
+                    else:
+                        new_end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+                elif end_date is '':
+                    new_start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+                    new_end_date = training_details.end_date
+                else:
+                    new_start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+                    new_end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+
                 context = {
                     'error_message': "You must complete all fields in the form",
                     'title': "Edit Training Session",
@@ -193,14 +202,14 @@ def training_edit(request, training_id):
                         'title': title,
                         'start_date': new_start_date,
                         'end_date': new_end_date,
-                        'max_attendees': max_attendees}
+                        'max_attendees': max_attendees
+                    }
                 }
-                print(context)
                 return render(request, 'agileHR/training_form.html', context)
             else:
                 training_details.title = title
-                training_details.start_date = start_date
-                training_details.end_date = end_date
+                training_details.start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+                training_details.end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
                 training_details.max_attendees = max_attendees
                 training_details.save()
                 return HttpResponseRedirect(reverse("agileHR:traindetail", args=(training_id,)))
@@ -211,7 +220,6 @@ def training_edit(request, training_id):
                 'form_detail': "edit", 'training_details': training_details})
     else:
         context={'training_details': training_details, 'title': "Edit Training Session" , 'form_detail': "edit" }
-        print(context)
         return render(request, 'agileHR/training_form.html', context)
 
 def training_add(request):

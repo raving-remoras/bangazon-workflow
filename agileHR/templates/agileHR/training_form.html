@@ -7,7 +7,11 @@
       {{title}}
     </h2>
     <div class="card-text">
-      {% if error_message %}<p style="color:red"><strong>{{error_message}}</strong></p>{% endif %}
+      {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+          {{error_message}}
+        </div>
+      {% endif %}
       {% if form_detail == "new" %}
         <form action="{% url 'agileHR:training_add' %}" method="POST">
       {% elif form_detail == "edit" %}
