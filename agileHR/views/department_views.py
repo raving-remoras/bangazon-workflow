@@ -46,6 +46,15 @@ def department_detail(request, dept_id):
     return render(request, 'agileHR/department_detail.html', context)
 
 def departmentadd(request):
+    """This method loads a form to add a new department, and, if the form is filled out completely, will then redirect to the departments list
+
+    Author: Brendan McCray
+
+    Returns:
+        render -- loads the department_form.html template.
+        HttpResponseRedirect -- loads the list of all departments
+    """
+
     if request.method == "POST":
         try:
           name = request.POST["dept_name"]
@@ -57,7 +66,7 @@ def departmentadd(request):
               "budget": budget
               })
           else:
-            new_dept = Department(name=name, budget=budget)
+            new_dept = Department(name=name.lower(), budget=budget)
             new_dept.save()
             return HttpResponseRedirect(reverse("agileHR:department"))
         except KeyError:
