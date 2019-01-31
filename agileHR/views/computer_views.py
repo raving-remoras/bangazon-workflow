@@ -23,9 +23,16 @@ def computers(request):
 
 
 def computer_search(request):
+    """Displays search results when a user searches for a computer by make or model
+
+    Author: Sebastian Civarolo
+
+    Returns:
+        render -- loads the page with search results when it receives a POST. Message displayed if no results.
+        HttpResponseRedirect -- if a user goes directly to the url, they are redirected to the computers view.
+    """
 
     if request.method == "POST":
-
 
         search_text = request.POST["search_text"]
 
