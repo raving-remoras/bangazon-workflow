@@ -10,11 +10,16 @@ urlpatterns = [
     path("departments/", views.department, name="department"),
     path('departments/add', views.departmentadd, name='departmentadd'),
     path("departments/<int:dept_id>/", views.department_detail, name="department_detail"),
+    # ex: /bangazon/trainings/
     path("trainings/", views.training, name="training"),
+    # ex: /bangazon/trainings/previous
+    path("trainings/previous", views.training_past, name="training_past"),
     # ex: /bangazon/trainings/5
     path("trainings/<int:training_id>", views.training_detail, name="traindetail"),
     # ex: /bangazon/trainings/5/edit
     path("trainings/<int:training_id>/edit", views.training_edit, name="training_edit"),
+    # ex: /bangazon/trainings/5/delete
+    path("trainings/<int:training_id>/delete", views.training_delete, name="training_delete"),
     # ex: /bangazon/trainings/add
     path("trainings/add", views.training_add, name="training_add"),
     # ex: /bangazon/computers/
