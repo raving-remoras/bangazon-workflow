@@ -199,3 +199,44 @@ class DeleteComputerTest(TestCase):
         # try to delete the computer
         with self.assertRaises(ProtectedError):
             response = self.client.post(reverse("agileHR:delete_computer", args=(1,)))
+
+
+class ComputerSearchTest(TestCase):
+    """Tests the search functionality for computers.
+
+    Author: Sebastian Civarolo
+
+    Methods:
+        test_search_view
+        test_search_view_noresults
+        test_search_view_redirect
+    """
+
+    def test_search_view(self):
+        """Creates a computer, searches for it, and checks that it is returned on the page."""
+
+        now = datetime.datetime.now()
+        computer = Computer.objects.create(make="m", model="m", serial_no="123", purchase_date=now)
+
+        response = self.client.post(reverse('agileHR:computer_search'), {
+            "search_text": "m"
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('<a href="/bangazon/computers/1/">m m</a>'.encode(), response.content)
+
+    def test_search_view_noresults(self):
+        """Tests that the no results message is displayed."""
+
+        response = self.client.post(reverse('agileHR:computer_search'), {
+            "search_text": "fail"
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("There are no search results".encode(), response.content)
+
+    def test_search_view_redirect(self):
+        """Tests that a user is redirected to computers view if they try to go to search page directly"""
+
+        response = self.client.get(reverse('agileHR:computer_search'))
+        self.assertEqual(response.status_code, 302)
