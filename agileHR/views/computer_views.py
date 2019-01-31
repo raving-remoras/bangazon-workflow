@@ -15,7 +15,7 @@ def computers(request):
         render -- loads the computer.html template.
     """
 
-    computers = Computer.objects.all()
+    computers = Computer.objects.all().order_by("make", "model")
     context = {
         "computers": computers
     }
