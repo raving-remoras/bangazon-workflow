@@ -62,7 +62,7 @@ def training_detail(request, training_id):
     end_future = True
     if training_details.start_date < now:
         start_future = False
-    elif training_details.end_date < now:
+    if training_details.end_date < now:
         end_future = False
 
     context = {
