@@ -5,14 +5,13 @@ from django.urls import reverse
 from ..models import Computer, EmployeeComputer, Employee
 from django.db.models.deletion import ProtectedError
 
-
-class ComputerTest(TestCase):
-    """Defines tests for Employee model and views
+class ComputerListTest(TestCase):
+    """Defines tests for the main Computers view that displays the computer list.
 
     Author: Sebastian Civarolo
+
     Methods:
         test_list_computers
-        test_computer_detail
     """
 
     def test_list_computers(self):
@@ -44,12 +43,21 @@ class ComputerTest(TestCase):
 
         response = self.client.get(reverse('agileHR:computers'))
 
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['computers']), 1)
         self.assertIn(new_computer.make.encode(), response.content)
         self.assertIn(new_computer.model.encode(), response.content)
 
+
+class ComputerDetailTest(TestCase):
+    """Defines tests for the Computer details view.
+
+    Author: Sebastian Civarolo
+
+    Methods:
+        test_computer_detail
+
+    """
 
     def test_computer_detail(self):
         """Tests the computer detail view: creates new employee, computer, and relationship."""
@@ -87,13 +95,22 @@ class ComputerTest(TestCase):
         self.assertEqual(len(response.context['computer'].employeecomputer_set.all()), 1)
 
 
+class NewComputerTest(TestCase):
+    """Defines tests for the new computer view and adding computers to the db.
+
+    Author: Sebastian Civarolo
+
+    Methods:
+        test_new_computer_form
+        test_post_new_computer
+    """
+
     def test_new_computer_form(self):
         """Tests that the new computer form loads properly."""
 
         response = self.client.get(reverse('agileHR:new_computer'))
 
         self.assertIn('<input class="form-control" type="text" name="make" id="make"'.encode(), response.content)
-
 
     def test_post_new_computer(self):
         """Tests posting a new computer from the new_computer view."""
@@ -123,6 +140,17 @@ class ComputerTest(TestCase):
         self.assertEqual(get_response.status_code, 200)
 
 
+class DeleteComputerTest(TestCase):
+    """Defines tests for trying to delete a computer.
+
+    Author: Sebastian Civarolo
+
+    Methods:
+        test_view_delete_computer
+        test_delete_computer
+        test_delete_protected_computer
+    """
+
     def test_view_delete_computer(self):
         """Tests that the delete confirmation page loads correctly."""
 
@@ -133,7 +161,6 @@ class ComputerTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("Are you sure you want to delete".encode(), response.content)
-
 
     def test_delete_computer(self):
         """Tests you can delete a computer that has never been assigned."""
@@ -147,7 +174,6 @@ class ComputerTest(TestCase):
         # confirm the computer is deleted
         no_computer = Computer.objects.filter(pk=1)
         self.assertEqual(len(no_computer), 0)
-
 
     def test_delete_protected_computer(self):
         """Tests you cannot delete a computer that has been assigned to an employee."""

@@ -44,3 +44,7 @@
 
 
 ## Computers
+- Computers can be accessed via the navbar. A list of all computers in use by the company are listed with the name of the employee assigned to it.
+- Clicking **New Computer** will open a form that prompts the user for the make, model, serial number, and purchase date of the computer. The user must also assign the computer to an employee that does not currently have a computer. Available employees are provided alphabetically in a dropdown.
+- Clicking on a computer from the computer list will show the computer details, including the history of employees that have been assigned to this computer.
+- On the details page, a delete button can be clicked to delete a computer. Clicking it will display a confirmation page. If the computer has never been assigned, it can be deleted. Computers that have any history of being assigned to an employee **cannot** be deleted.
