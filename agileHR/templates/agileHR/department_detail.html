@@ -25,11 +25,11 @@
     </div>
         {% if employees %}
             {% for emp in employees %}
-                <div class="list-group-item">
+                <a class="list-group-item list-group-item-action" href="{% url 'agileHR:employee_detail' emp.id %}">
                     <div class="d-flex w-100 justify-content-between">
                         <p class="mb-1">{{emp.last_name}}, {{emp.first_name}}</p>
                     </div>
-                </div>
+                </a>
             {% endfor %}
         {% else %}
             <div class="list-group-item">
