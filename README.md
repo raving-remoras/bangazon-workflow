@@ -18,11 +18,20 @@
 - A navbar at the top of the page can be used to visit each of Bangazon's four Human Resources focus areas (employees, departments, trainings, and computers).
 
 ## Employees
-
+- Employees can be accessed via the navbar. A list of all Employees and their departments is visible.
+- Clicking <em>New Employee</em> will open a form that prompts the user to create a new employee including full name, department, whether or not they are a supervisor, and start date. Submitting the form will take the user back to the Employee page and will display a success message.
+- Clicking on an employee will take the user to the employee detail page, where the user can see the employee's department, assigned computer, and assigned training sessions.
+- Clicking on an assigned training session will take the user to the training detail page (see details in Trainings section below)
+- Clicking <em>Edit Employee</em> will open a form with pre-populated data for that employee-- from there the user can edit any of the employee details.
+- On that edit form, the user can assign a new/different computer to an employee. If the employee already has a computer listed, assigning a new computer will unassign the employee's current computer.
+- The edit form also shows all upcoming trainings for the employee-- these can be deleted by clicking the delete checkboxes for any desired removals, and will be deleted upon submit.
+- Finally, the user can add new training programs for the employee by selecting all desired trainings from the given options-- to select multiple, use ctrl+click for windows and cmd+click for mac.
+- After making all edits to employee data, data will be updated upon submit and the user will be taken back to the employee page with a success message
 
 ## Departments
 - Departments can be accessed via the navbar. A list of all departments' titles, budgets, and sizes (number of assigned employees) is visible.
 - Clicking on a department will display a list of all assigned employees' names. The user can return to the departments list by clicking <em>Go Back</em>
+- Clicking on one of the employee names will take the user to the employee detail page (see specifics in Employee section above)
 - Clicking <em>Add a New Department</em> will open a form that prompts the user to submit a new department name and budget. Saving the form data will return the user to the list of departments. The user can find the department in the list alphabetically.
 - Alternatively, the user can click <em>Go Back</em> to return to the departments list without saving new data.
 
