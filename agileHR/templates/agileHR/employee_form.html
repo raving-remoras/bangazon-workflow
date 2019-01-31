@@ -13,7 +13,7 @@
  </div>
 {% endif %}
 
-<form action="{% url 'agileHR:employee_add' %}" method="POST">
+<form action="{% if add %}{% url 'agileHR:employee_add' %}{% else %}{% url 'agileHR:employee_edit' employee.id %}{% endif %}" method="POST">
   {% csrf_token %}
   <div class="form-group">
     <label for="first_name">First Name</label>

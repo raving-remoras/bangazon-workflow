@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -86,6 +86,7 @@ def employee_edit(request, employee_id):
         render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
         HttpResponseRedirect -- loads the employee page if add was successful
     """
+    now = datetime.datetime.now()
     departments = Department.objects.order_by("name")
     employee = get_object_or_404(Employee, pk=employee_id)
     employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id).filter(date_revoked=None)
@@ -103,7 +104,7 @@ def employee_edit(request, employee_id):
     computers = currently_unassigned | never_assigned
 
     if request.method == "POST":
-        print("post")
+
         try:
             department = get_object_or_404(Department, pk=request.POST["department"])
             first_name = request.POST["first_name"]
@@ -111,6 +112,8 @@ def employee_edit(request, employee_id):
             start_date = request.POST["start_date"]
             # end_date = request.POST["end_date"]
             is_supervisor = request.POST.get("is_supervisor", "") == "on"
+            __comp = request.POST["computer"]
+            print(__comp)
 
             if first_name == "" or last_name == "" or start_date == "":
                 return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form.", "departments": departments,
@@ -122,6 +125,12 @@ def employee_edit(request, employee_id):
                 "department": department
                 })
             else:
+                if __comp != "select":
+                    new_computer = get_object_or_404(Computer, pk=__comp)
+                    join = EmployeeComputer(computer=new_computer, employee=employee, date_assigned=now)
+                    join.save()
+                    employee.employeecomputer_set.add(join)
+
                 employee.first_name = first_name
                 employee.last_name = last_name
                 employee.department = department
