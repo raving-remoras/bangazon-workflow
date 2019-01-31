@@ -1,9 +1,8 @@
 import unittest
 from django.test import TestCase
 from django.urls import reverse
+from datetime import datetime, timedelta
 from ..models import Training, Employee, EmployeeTraining
-from datetime import datetime
-from datetime import timedelta
 
 class TrainingTest(TestCase):
     """Defines tests for Training Models and Views
@@ -14,7 +13,6 @@ class TrainingTest(TestCase):
             test_list_training
             test_get_training_detail
     """
-
 
     def test_list_training(self):
         """Test case verifies that the training sessions are listed when the navbar's 'training' link is clicked"""
@@ -36,7 +34,7 @@ class TrainingTest(TestCase):
         # Check that the rendered context contains 1 training session
         self.assertEqual(len(response.context['training_list']), 1)
 
-        # .encode converts from unicode utf-8
+        # Check that the training title appears in the rendered HTML content
         self.assertIn(new_training.title.encode(), response.content)
 
     def test_get_training_detail(self):
@@ -124,10 +122,10 @@ class TrainingTest(TestCase):
         self.assertIn('<input type="text" class="form-control" name="training_title" value="Test Training"/>'.encode(), response.content)
 
         # Training start date input field appears in HTML response content
-        self.assertIn('<input type="date" class="form-control" name="start_date" value="2019-01-30"/>'.encode(), response.content)
+        self.assertIn('<input type="date" class="form-control" name="start_date" value="'.encode(), response.content)
 
         # Training end date input field appears in HTML response content
-        self.assertIn('<input type="date" class="form-control" name="end_date" value="2019-02-01"/>'.encode(), response.content)
+        self.assertIn('<input type="date" class="form-control" name="end_date" value="'.encode(), response.content)
 
         # Training maximum attendees input field appears in HTML response content
         self.assertIn('<input type="number" class="form-control" name="max_attendees" value="41"/>'.encode(), response.content)
