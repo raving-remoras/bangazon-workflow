@@ -52,6 +52,7 @@ def new_computer(request):
 
     Returns:
         render -- Returns the form with an error message, or if successful, returns the new detail page.
+        HttpResponseRedirect -- when request is POST, will send you to the detail page if the computer creation is successfull.
     """
 
     if request.method == "POST":
@@ -101,8 +102,6 @@ def new_computer(request):
         # Combine the two querysets
         final_list = need_computers | never_computers
 
-        # print("need computers", need_computers)
-        # print("never_computers", never_computers)
         context = {
             "employees": final_list
         }
@@ -113,10 +112,14 @@ def new_computer(request):
 def delete_computer(request, computer_id):
     """Deletes a computer ONLY if it has NEVER been assigned to an employee.
 
+        Author: Sebastian Civarolo
+
         Arguments:
             computer_id {int} -- the ID of the computer to be deleted.
 
-        Author: Sebastian Civarolo
+        Returns:
+            render -- loads the delete confirmation view with corresponding message.
+            HttpResponseRedirect -- when request is POST, will delete the computer and redirect to the computers view.
     """
 
     if request.method == "POST":
