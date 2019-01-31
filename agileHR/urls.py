@@ -19,6 +19,8 @@ urlpatterns = [
     path("trainings/<int:training_id>", views.training_detail, name="traindetail"),
     # ex: /bangazon/trainings/5/edit
     path("trainings/<int:training_id>/edit", views.training_edit, name="training_edit"),
+    # ex: /bangazon/trainings/5/delete
+    path("trainings/<int:training_id>/delete", views.training_delete, name="training_delete"),
     # ex: /bangazon/trainings/add
     path("trainings/add", views.training_add, name="training_add"),
     # ex: /bangazon/computers/

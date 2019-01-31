@@ -49,19 +49,11 @@ class Command(BaseCommand):
         # Seed data for Training
         max_attendees=[10, 15, 20, 22, 24, 27,28, 35, 40, 53]
 
-        # Seed data for past training
-        # seeder.add_entity(Training, 10, {
-        #     "title":lambda x: seeder.faker.catch_phrase(),
-        #     "start_date":lambda x: seeder.faker.date_time_this_decade(before_now=True, after_now=False),
-        #     "end_date":lambda x: seeder.faker.date_time_this_decade(before_now=True, after_now=False),
-        #     "max_attendees": lambda x: seeder.faker.word(ext_word_list=max_attendees),
-        # })
-
-        seeder.add_entity(Training, 20, {
+        seeder.add_entity(Training, 30, {
             "title":lambda x: seeder.faker.catch_phrase(),
-            "start_date":lambda x: seeder.faker.future_datetime(end_date="+60d"),
-            "end_date":lambda x: seeder.faker.future_datetime(end_date="+90d"),
             "max_attendees": lambda x: seeder.faker.word(ext_word_list=max_attendees),
+            "start_date": lambda x: seeder.faker.future_datetime(end_date="+60d"),
+            "end_date": lambda x: seeder.faker.future_datetime(end_date="+90d")
         })
 
         # seeder data for Employee Training Join Table

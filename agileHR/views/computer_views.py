@@ -61,6 +61,8 @@ def new_computer(request):
             model = request.POST["model"]
             serial_no = request.POST["serial_no"]
             purchase_date = request.POST["purchase_date"]
+            employee_id = request.POST["employee"]
+            employee = Employee.objects.get(pk=employee_id)
 
             if make is "" or model is "" or serial_no is "" or purchase_date is "":
                 return render(request, "agileHR/computer_new.html", {
@@ -71,15 +73,40 @@ def new_computer(request):
                     "purchase_date": purchase_date
                 })
             else:
+                now = datetime.datetime.now()
                 new_computer = Computer(make=make, model=model, serial_no=serial_no, purchase_date=purchase_date)
                 new_computer.save()
+                join = EmployeeComputer.objects.create(
+                    computer = new_computer,
+                    employee = employee,
+                    date_assigned = now
+                )
+                join.save()
+
                 return HttpResponseRedirect(reverse("agileHR:computer_detail", args=(new_computer.id,)))
         except KeyError:
             return render(request, "agileHR/computer_new.html", {
                 "error_message": "Please fill out all fields"
             })
     else:
-        context = {}
+        # Get all computer assignment history
+        computer_assignments = EmployeeComputer.objects.all()
+
+        # Get employees who have had a computer but do not currently have one.
+        need_computers = Employee.objects.exclude(employeecomputer__date_revoked=None).order_by('last_name')
+
+        # Get employees who have never had a computer.
+        never_computers = Employee.objects.exclude(employeecomputer__in=computer_assignments).order_by('last_name')
+
+        # Combine the two querysets
+        final_list = need_computers | never_computers
+
+        # print("need computers", need_computers)
+        # print("never_computers", never_computers)
+        context = {
+            "employees": final_list
+        }
+
         return render(request, "agileHR/computer_new.html", context)
 
 

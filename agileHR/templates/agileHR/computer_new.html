@@ -33,8 +33,23 @@
               <input class="form-control" type="date" name="purchase_date" id="purchase_date" max="{% now 'Y-m-d' %}" value="{% if purchase_date %}{{ purchase_date }}{% else %}{% now 'Y-m-d' %}{% endif %}">
             </div>
           </div>
-
-          <button type="submit" class="btn btn-primary">Add Computer</button>
+          <div class="row">
+            <div class="col">
+              <label for="employee">Assign to Employee:</label>
+              <select class="form-control" name="employee" id="employee">
+                {% for employee in employees %}
+                  <option for="employee" value="{{ employee.id }}">
+                    {{employee.first_name}} {{employee.last_name}}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mt-3">
+              <button type="submit" class="btn btn-primary">Add Computer</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

@@ -31,7 +31,7 @@ Author: Rachel Daniel
         <p class="mb-1">No training sessions booked for this employee</p>
       {% endif %}
       {% for training_session in employee.employeetraining_set.all%}
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a href="{% url 'agileHR:traindetail' training_session.training_id %}" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ training_session.training.title | title }}</h5>
                 </div>
