@@ -29,9 +29,10 @@ Author: Sebastian Civarolo
 
     <div class="row">
         <div class="col">
-            <ul>
+            <ul class="list-group">
             {% for computer in computers %}
-                <li><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a>
+                <li class="list-group-item list-group-item-action">
+                    <span><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a><span>
                 {% for ec in computer.employeecomputer_set.all %}
                     {% if not ec.date_revoked %}
                         — {{ec.employee.first_name}} {{ec.employee.last_name}}
