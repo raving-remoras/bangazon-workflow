@@ -14,7 +14,13 @@
         <div class="col">
             <ul>
             {% for computer in computers %}
-                <li><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a></li>
+                <li><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a>
+                {% for ec in computer.employeecomputer_set.all %}
+                    {% if not ec.date_revoked %}
+                        — {{ec.employee.first_name}} {{ec.employee.last_name}}
+                    {% endif %}
+                {% endfor %}
+                </li>
             {% endfor %}
             </ul>
         </div>
