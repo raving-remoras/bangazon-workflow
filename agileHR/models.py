@@ -103,6 +103,7 @@ class EmployeeTraining(models.Model):
         Returns:
             str -- Description of the employee and training relationship
      """
+    # FIXME: When deleting a training, the join table training_id is set to null. Do we want to delete the join table?
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, blank=True)
     training = models.ForeignKey(Training, on_delete=models.SET_NULL, null=True, blank=True)
 

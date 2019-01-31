@@ -15,7 +15,7 @@
         </h5>
         <div class="list-group">
             {% for dept in departments %}
-                <a href="{% url 'agileHR:department_detail' dept.id %}" class="list-group-item list-group-item-action">{{dept.name|upper}}<br />
+                <a href="{% url 'agileHR:department_detail' dept.id %}" class="list-group-item list-group-item-action"><strong>{{dept.name|upper}}</strong><br />
                     <div class="d-flex w-100 justify-content-between">
                         <p class="mb-1">Budget: ${{dept.budget|intcomma}}</p><br />
                         {% for dept_ in dept_size %}

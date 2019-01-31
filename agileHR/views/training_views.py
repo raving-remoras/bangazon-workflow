@@ -1,8 +1,8 @@
+from datetime import datetime, date, timezone
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
-from datetime import datetime, timezone
 from agileHR.models import *
 
 def training(request):
@@ -14,7 +14,7 @@ def training(request):
         render -- Returns the training template
     """
 
-    training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by("start_date")
+    training_list = Training.objects.filter(end_date__date__gte=datetime.date.today()).order_by("start_date")
 
     context = {
         "training_list": training_list,
@@ -58,14 +58,18 @@ def training_detail(request, training_id):
     now = datetime.datetime.now(timezone.utc)
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
-    future = True
+    start_future = True
+    end_future = True
     if training_details.start_date < now:
-        future = False
+        start_future = False
+    if training_details.end_date < now:
+        end_future = False
 
     context = {
         "training_details": training_details,
         "attendee_size": attendee_size,
-        "future": future
+        "start_future": start_future,
+        "end_future": end_future
     }
 
     return render(request, "agileHR/training_detail.html", context)
@@ -183,5 +187,32 @@ def training_add(request):
             "title": "Add New Training Session" ,
             "form_detail": "new"
         }
-
         return render(request, "agileHR/training_form.html", context)
+
+def training_delete(request, training_id):
+    """Deletes a future training - but not a past training
+
+    Author: Brendan McCray
+
+    Returns:
+        render -- returns the training_delete template
+    """
+
+    if request.method == 'POST':
+        training = Training.objects.get(pk=training_id)
+        training.delete()
+        return HttpResponseRedirect(reverse("agileHR:training"))
+    else:
+        training = Training.objects.get(pk=training_id)
+
+        if training.start_date.date() > date.today():
+            context = {
+                "training": training,
+                "can_delete": True
+            }
+        else:
+            context = {
+                "training": training,
+                "can_delete": False
+            }
+        return render(request, 'agileHR/training_delete.html', context)
