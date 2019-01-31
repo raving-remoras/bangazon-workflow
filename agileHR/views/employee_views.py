@@ -113,21 +113,31 @@ def employee_edit(request, employee_id):
             first_name = request.POST["first_name"]
             last_name = request.POST["last_name"]
             start_date = request.POST["start_date"]
-            # end_date = request.POST["end_date"]
+            end_date = request.POST["end_date"]
             is_supervisor = request.POST.get("is_supervisor", "") == "on"
             __comp = request.POST["computer"]
             delete_training_set = request.POST.getlist("delete")
+            add_training_set = request.POST.getlist("trainings")
 
             # check to make sure mandatory info is populated
             if first_name == "" or last_name == "" or start_date == "":
-                return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form.", "departments": departments,
-                "first_name": first_name,
-                "last_name": last_name,
-                "start_date": start_date,
-                "end_date": end_date,
-                "is_supervisor": is_supervisor,
-                "department": department
-                })
+                context = {
+                    "employee": employee,
+                    "computers": computers,
+                    "employee_computer": employee_computer,
+                    "employee_trainings": employee_trainings,
+                    "trainings": trainings,
+                    "departments": departments,
+                    "edit": "edit",
+                    "first_name": employee.first_name,
+                    "last_name": employee.last_name,
+                    "start_date": employee.start_date.date(),
+                    "end_date": employee.end_date.date(),
+                    "is_supervisor": employee.is_supervisor,
+                    "department": employee.department,
+                    "error_message": "You must complete all required fields."
+                }
+                return render(request, "agileHR/employee_form.html", context)
             else:
 
                 # check for new computer assignment-- if new comp, unassign any old comps and create join enitity for new
@@ -141,9 +151,18 @@ def employee_edit(request, employee_id):
                     join.save()
                     employee.employeecomputer_set.add(join)
 
+                # delete any upcoming trainings with delete boxes checked
                 for training in delete_training_set:
                     employee_training = EmployeeTraining.objects.get(pk=training)
                     employee_training.delete()
+
+                # add a join entity to EmployeeTraining for every upcoming training selected
+                for training in add_training_set:
+                    new_training = get_object_or_404(Training, pk=training)
+                    join = EmployeeTraining(employee=employee, training=new_training)
+                    join.save()
+                    employee.employeetraining_set.add(join)
+
 
                 #update employee entity with any altered info
                 employee.first_name = first_name
@@ -151,15 +170,31 @@ def employee_edit(request, employee_id):
                 employee.department = department
                 employee.is_supervisor = is_supervisor
                 employee.start_date = start_date
+                if end_date != "":
+                    employee.end_date = end_date
                 employee.save()
                 messages.success(request, 'Saved!')
                 return HttpResponseRedirect(reverse("agileHR:employee"))
 
 
         except KeyError:
-            return render(request, 'agileHR/employee_form.html', {
-            'error_message': "You must complete all fields in the form.", "departments": departments
-            })
+            context = {
+            "employee": employee,
+            "computers": computers,
+            "employee_computer": employee_computer,
+            "employee_trainings": employee_trainings,
+            "trainings": trainings,
+            "departments": departments,
+            "edit": "edit",
+            "first_name": employee.first_name,
+            "last_name": employee.last_name,
+            "start_date": employee.start_date.date(),
+            "end_date": employee.end_date.date(),
+            "is_supervisor": employee.is_supervisor,
+            "department": employee.department,
+            "error_message": "You must complete all required fields."
+            }
+            return render(request, 'agileHR/employee_form.html', context)
     else:
         #render initial edit page with populated data
         context = {
@@ -173,6 +208,7 @@ def employee_edit(request, employee_id):
             "first_name": employee.first_name,
             "last_name": employee.last_name,
             "start_date": employee.start_date.date(),
+            "end_date": employee.end_date.date(),
             "is_supervisor": employee.is_supervisor,
             "department": employee.department
             }
