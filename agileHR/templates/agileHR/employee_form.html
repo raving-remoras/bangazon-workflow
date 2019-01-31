@@ -69,12 +69,7 @@
                 <select class="form-control" name="computer" id="computer">
                     <option value="select" id="select">Select</option>
                   {% for comp in computers %}
-                  <option
-                    value="{{ comp.id }}"
-                    id="{{ comp.id }}"
-                    {% if computer.id is comp.id %} selected="selected" {% endif %}
-                    >{{ comp.make }} {{ comp.model }} {{ comp.serial_no }}</option
-                  >
+                    <option value="{{ comp.id }}" id="{{ comp.id }}" {% if computer.id is comp.id %} selected="selected" {% endif %} >{{ comp.make }} {{ comp.model }} {{ comp.serial_no }}</option>
                   {% endfor %}
                 </select>
             </div>
@@ -96,10 +91,8 @@
                                     <p class="mb-1">End: {{ training.training.end_date }}</p>
                                     <div class="form-group form-check text-right">
                                             <input type="checkbox" class="form-check-input" name="delete"
-                                            value="{{training.id}}" id="{{training.id}}"/>
-
-                                            <label class="form-check-label" for="delete"
-                                              >Remove?</label>
+                                            value="{{training.id}}" id="{{training.id}"/>
+                                            <label class="form-check-label" for="delete">Remove?</label>
                                     </div>
                             </div>
                         {% endfor %}
@@ -110,11 +103,7 @@
                           <label for="trainings">Assign Trainings:</label>
                           <select multiple class="form-control" name="trainings" id="trainings">
                             {% for training in trainings %}
-                            <option
-                              value="{{ training.id }}"
-                              id="{{ training.id }}"
-                              > {{ training.start_date | date:'m-d-Y'}} | {{ training.title | title }} </option
-                            >
+                            <option value="{{ training.id }}" id="{{ training.id }}"> {{ training.start_date | date:'m-d-Y'}} | {{ training.title | title }} </option>
                             {% endfor %}
                           </select>
                     </div>

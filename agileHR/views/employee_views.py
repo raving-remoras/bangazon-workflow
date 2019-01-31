@@ -91,7 +91,7 @@ def employee_edit(request, employee_id):
     employee = get_object_or_404(Employee, pk=employee_id)
     employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id, date_revoked=None)
     trainings = Training.objects.filter(start_date__gt=now).order_by("start_date")
-    employee_trainings = EmployeeTraining.objects.filter(employee_id=employee_id, training__start_date__gt=now)
+    employee_trainings = EmployeeTraining.objects.filter(employee_id=employee_id, training__start_date__gte=now)
 
 
     # Get all computer assignment history
@@ -132,7 +132,7 @@ def employee_edit(request, employee_id):
                     "first_name": employee.first_name,
                     "last_name": employee.last_name,
                     "start_date": employee.start_date.date(),
-                    "end_date": employee.end_date.date(),
+                    "end_date": employee.end_date.date() if employee.end_date else None,
                     "is_supervisor": employee.is_supervisor,
                     "department": employee.department,
                     "error_message": "You must complete all required fields."
@@ -189,7 +189,7 @@ def employee_edit(request, employee_id):
             "first_name": employee.first_name,
             "last_name": employee.last_name,
             "start_date": employee.start_date.date(),
-            "end_date": employee.end_date.date(),
+            "end_date": employee.end_date.date() if employee.end_date else None,
             "is_supervisor": employee.is_supervisor,
             "department": employee.department,
             "error_message": "You must complete all required fields."
@@ -208,7 +208,7 @@ def employee_edit(request, employee_id):
             "first_name": employee.first_name,
             "last_name": employee.last_name,
             "start_date": employee.start_date.date(),
-            "end_date": employee.end_date.date(),
+            "end_date": employee.end_date.date() if employee.end_date else None,
             "is_supervisor": employee.is_supervisor,
             "department": employee.department
             }
