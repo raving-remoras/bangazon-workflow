@@ -126,6 +126,10 @@ def employee_edit(request, employee_id):
                 })
             else:
                 if __comp != "select":
+                    if employee_computer:
+                        for assignment in employee_computer:
+                            assignment.date_revoked = now
+                            assignment.save()
                     new_computer = get_object_or_404(Computer, pk=__comp)
                     join = EmployeeComputer(computer=new_computer, employee=employee, date_assigned=now)
                     join.save()
