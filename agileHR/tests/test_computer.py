@@ -3,6 +3,7 @@ import datetime
 from django.test import TestCase
 from django.urls import reverse
 from ..models import Computer, EmployeeComputer, Employee
+from django.db.models.deletion import ProtectedError
 
 
 class ComputerTest(TestCase):
@@ -97,11 +98,22 @@ class ComputerTest(TestCase):
     def test_post_new_computer(self):
         """Tests posting a new computer from the new_computer view."""
 
+        now = datetime.datetime.now()
+
+        new_employee = Employee.objects.create(
+            first_name = "Deborah",
+            last_name = "Smith",
+            start_date = now,
+            is_supervisor = False,
+            department = None
+        )
+
         response = self.client.post(reverse("agileHR:new_computer"), {
             "make": "Make",
             "model": "Model",
             "serial_no": '123456',
-            "purchase_date": datetime.datetime.now()})
+            "purchase_date": datetime.datetime.now(),
+            "employee": 1 })
 
         get_response = self.client.get(reverse("agileHR:computer_detail", args=(1,)))
 
@@ -114,11 +126,8 @@ class ComputerTest(TestCase):
     def test_view_delete_computer(self):
         """Tests that the delete confirmation page loads correctly."""
 
-        response = self.client.post(reverse("agileHR:new_computer"), {
-            "make": "Make",
-            "model": "Model",
-            "serial_no": '123456',
-            "purchase_date": datetime.datetime.now()})
+        now = datetime.datetime.now()
+        computer = Computer.objects.create(make="m", model="m", serial_no="123", purchase_date=now)
 
         response = self.client.get(reverse("agileHR:delete_computer", args=(1,)))
 
@@ -127,18 +136,40 @@ class ComputerTest(TestCase):
 
 
     def test_delete_computer(self):
-        """Tests deleting the computer from the database"""
+        """Tests you can delete a computer that has never been assigned."""
 
-        response = self.client.post(reverse("agileHR:new_computer"), {
-            "make": "Make",
-            "model": "Model",
-            "serial_no": '123456',
-            "purchase_date": datetime.datetime.now()})
+        now = datetime.datetime.now()
+        computer = Computer.objects.create(make="m", model="m", serial_no="123", purchase_date=now)
 
-        # delete the computer
         response = self.client.post(reverse("agileHR:delete_computer", args=(1,)))
         self.assertEqual(response.status_code, 302)
 
         # confirm the computer is deleted
-        computer = Computer.objects.filter(pk=1)
-        self.assertEqual(len(computer), 0)
+        no_computer = Computer.objects.filter(pk=1)
+        self.assertEqual(len(no_computer), 0)
+
+
+    def test_delete_protected_computer(self):
+        """Tests you cannot delete a computer that has been assigned to an employee."""
+
+        now = datetime.datetime.now()
+
+        new_employee = Employee.objects.create(
+            first_name = "Deborah",
+            last_name = "Smith",
+            start_date = now,
+            is_supervisor = False,
+            department = None
+        )
+
+        make_computer = self.client.post(reverse("agileHR:new_computer"), {
+            "make": "Make",
+            "model": "Model",
+            "serial_no": '123456',
+            "purchase_date": datetime.datetime.now(),
+            "employee": 1
+        })
+
+        # try to delete the computer
+        with self.assertRaises(ProtectedError):
+            response = self.client.post(reverse("agileHR:delete_computer", args=(1,)))

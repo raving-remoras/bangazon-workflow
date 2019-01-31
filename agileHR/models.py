@@ -8,7 +8,7 @@ from django.utils import timezone
 class Department(models.Model):
     """Defines a department within the organization.
 
-    Author: Brendan
+    Author: Brendan McCray
     Returns:
         str -- Description of the employee and training relationship
 
