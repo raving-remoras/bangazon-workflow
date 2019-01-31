@@ -7,8 +7,11 @@ urlpatterns = [
     path("employees/", views.employee, name="employee"),
     path("employees/<int:employee_id>/", views.employee_detail, name="employee_detail"),
     path("employees/add", views.employee_add, name="employee_add"),
+    # ex: /bangazon/departments/
     path("departments/", views.department, name="department"),
+    # ex: /bangazon/departments/add
     path('departments/add', views.departmentadd, name='departmentadd'),
+    # ex: /bangazon/departments/42
     path("departments/<int:dept_id>/", views.department_detail, name="department_detail"),
     # ex: /bangazon/trainings/
     path("trainings/", views.training, name="training"),
