@@ -38,7 +38,7 @@ def employee_add(request):
     Author: Rachel Daniel
 
     Returns:
-        render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
+        render -- loads the employee_form.html template with add context when originally navigating to the page, or renders form with error message if submit was unsuccessful
         HttpResponseRedirect -- loads the employee page if add was successful
     """
     departments = Department.objects.order_by('name')
@@ -78,18 +78,21 @@ def employee_add(request):
 
 
 def employee_edit(request, employee_id):
-    """This method queries the database for the departments and renders the form for adding a new employee. Upon submit, the method collects form data from post request, validates, and adds a new employee
+    """This method queries the database for the departments, unassigned computers, upcoming trainings, current employee and their assigned computer, loads an edit form, and allows users to update Employee, EmployeeComputer and EmployeeTraining
 
     Author: Rachel Daniel
 
     Returns:
-        render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
-        HttpResponseRedirect -- loads the employee page if add was successful
+        render -- loads the employee_form.html template with edit context when originally navigating to the page, or renders form with error message if submit was unsuccessful
+        HttpResponseRedirect -- loads the employee page if edit was successful
     """
     now = datetime.datetime.now()
     departments = Department.objects.order_by("name")
     employee = get_object_or_404(Employee, pk=employee_id)
-    employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id).filter(date_revoked=None)
+    employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id, date_revoked=None)
+    trainings = Training.objects.filter(start_date__gt=now).order_by("start_date")
+    employee_trainings = EmployeeTraining.objects.filter(employee_id=employee_id, training__start_date__gt=now)
+
 
     # Get all computer assignment history
     computer_assignments = EmployeeComputer.objects.all()
@@ -113,8 +116,9 @@ def employee_edit(request, employee_id):
             # end_date = request.POST["end_date"]
             is_supervisor = request.POST.get("is_supervisor", "") == "on"
             __comp = request.POST["computer"]
-            print(__comp)
+            delete_training_set = request.POST.getlist("delete")
 
+            # check to make sure mandatory info is populated
             if first_name == "" or last_name == "" or start_date == "":
                 return render(request, "agileHR/employee_form.html", {"error_message": "You must complete all fields in the form.", "departments": departments,
                 "first_name": first_name,
@@ -125,6 +129,8 @@ def employee_edit(request, employee_id):
                 "department": department
                 })
             else:
+
+                # check for new computer assignment-- if new comp, unassign any old comps and create join enitity for new
                 if __comp != "select":
                     if employee_computer:
                         for assignment in employee_computer:
@@ -135,6 +141,11 @@ def employee_edit(request, employee_id):
                     join.save()
                     employee.employeecomputer_set.add(join)
 
+                for training in delete_training_set:
+                    employee_training = EmployeeTraining.objects.get(pk=training)
+                    employee_training.delete()
+
+                #update employee entity with any altered info
                 employee.first_name = first_name
                 employee.last_name = last_name
                 employee.department = department
@@ -150,10 +161,13 @@ def employee_edit(request, employee_id):
             'error_message': "You must complete all fields in the form.", "departments": departments
             })
     else:
+        #render initial edit page with populated data
         context = {
             "employee": employee,
             "computers": computers,
             "employee_computer": employee_computer,
+            "employee_trainings": employee_trainings,
+            "trainings": trainings,
             "departments": departments,
             "edit": "edit",
             "first_name": employee.first_name,
