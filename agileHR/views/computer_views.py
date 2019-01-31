@@ -22,6 +22,33 @@ def computers(request):
     return render(request, 'agileHR/computers.html', context)
 
 
+def computer_search(request):
+
+    if request.method == "POST":
+
+
+        search_text = request.POST["search_text"]
+
+        if search_text is not "":
+            by_make = Computer.objects.filter(make__contains=search_text).order_by("make", "model")
+            by_model = Computer.objects.filter(model__contains=search_text).order_by("make", "model")
+            results = by_make | by_model
+            context = {
+                "results": results,
+                "length": len(results),
+                "search_text": search_text,
+                "no_results": True if len(results) is 0 else False
+            }
+        else:
+            context = {
+                "no_results": True,
+                "search_text": search_text
+            }
+        return render(request, 'agileHR/computer_search.html', context)
+
+    else:
+        return HttpResponseRedirect(reverse('agileHR:computers'))
+
 def computer_detail(request, computer_id):
     """Displays the details about a single computer owned by the company.
 

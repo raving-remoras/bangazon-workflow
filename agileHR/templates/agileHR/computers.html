@@ -16,6 +16,17 @@ Author: Sebastian Civarolo
         </div>
     </div>
 
+    <div class="row my-4">
+        <div class="col">
+            <form action="{% url 'agileHR:computer_search' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search_text" id="search_text" placeholder="search by make or model"><button class="input-group-append btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col">
             <ul>
