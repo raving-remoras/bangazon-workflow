@@ -14,7 +14,7 @@ def training(request):
         render -- Returns the training template
     """
 
-    training_list = Training.objects.filter(start_date__date__gte=datetime.date.today()).order_by("start_date")
+    training_list = Training.objects.filter(end_date__date__gte=datetime.date.today()).order_by("start_date")
 
     context = {
         "training_list": training_list,
@@ -58,14 +58,18 @@ def training_detail(request, training_id):
     now = datetime.datetime.now(timezone.utc)
     training_details = get_object_or_404(Training, pk=training_id)
     attendee_size = len(EmployeeTraining.objects.filter(training_id=training_id))
-    future = True
+    start_future = True
+    end_future = True
     if training_details.start_date < now:
-        future = False
+        start_future = False
+    elif training_details.end_date < now:
+        end_future = False
 
     context = {
         "training_details": training_details,
         "attendee_size": attendee_size,
-        "future": future
+        "start_future": start_future,
+        "end_future": end_future
     }
 
     return render(request, "agileHR/training_detail.html", context)
@@ -201,7 +205,7 @@ def training_delete(request, training_id):
     else:
         training = Training.objects.get(pk=training_id)
 
-        if training.end_date.date() > date.today():
+        if training.start_date.date() > date.today():
             context = {
                 "training": training,
                 "can_delete": True

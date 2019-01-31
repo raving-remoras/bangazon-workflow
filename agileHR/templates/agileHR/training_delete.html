@@ -21,7 +21,7 @@
   {% else %}
     <div class="row">
       <div class="column">
-        <p>Sorry, <strong>{{ training.title }}</strong> can't be deleted because it has already taken place.</p>
+        <p>Sorry, <strong>{{ training.title }}</strong> can't be deleted because it is currently underway or has already taken place.</p>
         <div class="my-4">
           <a href="{% url 'agileHR:traindetail' training.id %}"><button type="button" class="btn btn-primary">Go back</button></a>
         </div>

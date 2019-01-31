@@ -155,6 +155,7 @@ class TrainingDeleteTest(TestCase):
 
         Methods:
             test_delete_training
+            test_delete_current_training
             test_delete_past_training
     """
 
@@ -173,19 +174,37 @@ class TrainingDeleteTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    # def test_delete_past_training(self):
-    #     """Test case verifies that when a POST (delete) operation is performed on a past event, the server rejects the request"""
+    def test_delete_current_training(self):
+        """Test case verifies that when a POST (delete) operation is performed on a current event, the server rejects the request"""
 
-    #     past_date = datetime.now(tz=None) - timedelta(days=2)
+        past_date = datetime.now(tz=None) - timedelta(days=2)
+        future_date = datetime.now(tz=None) + timedelta(days=2)
 
-    #     new_training = Training.objects.create(
-    #         title="Test Training",
-    #         start_date= datetime.now(tz=None),
-    #         end_date= future_date,
-    #         max_attendees= 41
-    #     )
+        Training.objects.create(
+            title="Test Training",
+            start_date= past_date,
+            end_date= future_date,
+            max_attendees= 41
+        )
 
-    #     response = self.client.get(reverse('agileHR:training_edit', args=(1,)))
+        response = self.client.get(reverse('agileHR:training_delete', args=(1,)))
 
-    #     # Checks that the response is 200 ok
-    #     self.assertEqual(response.status_code, 200)
+        # Checks that a current training cannot be deleted
+        self.assertIn("<p>Sorry, <strong>Test Training</strong> can\'t be deleted because it is currently underway or has already taken place.</p>".encode(), response.content)
+
+    def test_delete_past_training(self):
+        """Test case verifies that when a POST (delete) operation is performed on a past event, the server rejects the request"""
+
+        past_date = datetime.now(tz=None) - timedelta(days=2)
+
+        Training.objects.create(
+            title="Test Training 2",
+            start_date= past_date,
+            end_date= past_date,
+            max_attendees= 41
+        )
+
+        response = self.client.get(reverse('agileHR:training_delete', args=(1,)))
+
+        # Checks that a current training cannot be deleted
+        self.assertIn("<p>Sorry, <strong>Test Training 2</strong> can\'t be deleted because it is currently underway or has already taken place.</p>".encode(), response.content)
