@@ -93,10 +93,10 @@ def new_computer(request):
         computer_assignments = EmployeeComputer.objects.all()
 
         # Get employees who have had a computer but do not currently have one.
-        need_computers = Employee.objects.exclude(employeecomputer__date_revoked=None)
+        need_computers = Employee.objects.exclude(employeecomputer__date_revoked=None).order_by('last_name')
 
         # Get employees who have never had a computer.
-        never_computers = Employee.objects.exclude(employeecomputer__in=computer_assignments)
+        never_computers = Employee.objects.exclude(employeecomputer__in=computer_assignments).order_by('last_name')
 
         # Combine the two querysets
         final_list = need_computers | never_computers
