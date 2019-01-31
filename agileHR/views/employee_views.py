@@ -18,6 +18,7 @@ def employee(request):
     context = {'employee_list': employee_list}
     return render(request, 'agileHR/employee.html', context)
 
+
 def employee_detail(request, employee_id):
     """This method queries the database for the employee clicked on employee page as well as their current (non-revoked) computer, and renders the employee detail page
 

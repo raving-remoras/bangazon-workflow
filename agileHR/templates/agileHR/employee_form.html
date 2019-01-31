@@ -1,4 +1,12 @@
-{% extends "agileHR/index.html" %} {% block content %}
+{% extends "agileHR/index.html" %}
+
+{% comment %}
+Template for both Add and Edit form for employee-- passed as context from employee_add and employee_edit views, respectively
+
+Author: Rachel Daniel
+{% endcomment %}
+
+{% block content %}
 
 {% if add %}
 <h2>Add an Employee</h2>
@@ -76,39 +84,36 @@
         </div>
     </div>
     <div class="card mx-auto">
-            <div class="card-body">
-                  <h4> Upcoming Trainings: </h4>
-                  {% if not employee_trainings %}
-                      <p>No Trainings Assigned</p>
-                    {% else %}
-                    <div class="list-group">
-                        {% for training in employee_trainings %}
-                            <div  class="list-group-item list-group-item-action flex-column align-items-start">
-                                    <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">{{ training.training.title | title }}</h5>
-                                    </div>
-                                    <p class="mb-1">Start: {{ training.training.start_date }}</p>
-                                    <p class="mb-1">End: {{ training.training.end_date }}</p>
-                                    <div class="form-group form-check text-right">
-                                            <input type="checkbox" class="form-check-input" name="delete"
-                                            value="{{training.id}}" id="{{training.id}"/>
-                                            <label class="form-check-label" for="delete">Remove?</label>
-                                    </div>
-                            </div>
-                        {% endfor %}
-                     </div>
-                  {% endif %}
-
-                  <div class="form-group">
-                          <label for="trainings">Assign Trainings:</label>
-                          <select multiple class="form-control" name="trainings" id="trainings">
-                            {% for training in trainings %}
-                            <option value="{{ training.id }}" id="{{ training.id }}"> {{ training.start_date | date:'m-d-Y'}} | {{ training.title | title }} </option>
-                            {% endfor %}
-                          </select>
+        <div class="card-body">
+            <h4> Upcoming Trainings: </h4>
+            {% if not employee_trainings %}
+                <p>No Trainings Assigned</p>
+            {% else %}
+            <div class="list-group">
+                {% for training in employee_trainings %}
+                    <div  class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ training.training.title | title }}</h5>
+                        </div>
+                        <p class="mb-1">Start: {{ training.training.start_date }}</p>
+                        <p class="mb-1">End: {{ training.training.end_date }}</p>
+                        <div class="form-group form-check text-right">
+                            <input type="checkbox" class="form-check-input" name="delete" value="{{training.id}}" id="{{training.id}"/>
+                            <label class="form-check-label" for="delete">Remove?</label>
+                        </div>
                     </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="trainings">Assign Trainings:</label>
+                <select multiple class="form-control" name="trainings" id="trainings">
+                {% for training in trainings %}
+                    <option value="{{ training.id }}" id="{{ training.id }}"> {{ training.start_date | date:'m-d-Y'}} | {{ training.title | title }} </option>
+                {% endfor %}
+                </select>
+            </div>
         </div>
-
   {% endif %}
   <input type="submit" class="btn btn-primary" value="{% if add %}Add Employee{% else %}Save Changes{% endif %}" />
 </form>
