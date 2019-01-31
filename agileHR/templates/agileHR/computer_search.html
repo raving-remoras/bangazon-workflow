@@ -8,8 +8,16 @@ Author: Sebastian Civarolo
 
 {% block content %}
     <div class="row">
-      <div class="col">
+      <div class="col-10">
         <h2>Computer Search</h2>
+      </div>
+      <div class="col-2 text-right">
+          <a href="{% url 'agileHR:computers' %}"class="btn btn-primary text-white">All Computers</a>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
         {% if no_results %}
             <h6>There are no search results for {{ search_text }}</h6>
             {% else %}
