@@ -14,6 +14,7 @@
             <div class="card-text">
                 <p>Max Attendees: {{training_details.max_attendees}} | Available Seats: {{training_details.max_attendees|sub:attendee_size}} </p>
                 <div>
+                  {% if future == True %}
                     <a href="{% url 'agileHR:training_edit' training_details.id %}"><button type="button" class="btn btn-outline-secondary">Edit Details</button></a>
 
                     {% now "Y-m-d" as todays_date %}
@@ -22,6 +23,9 @@
                     {% endif %}
                     
                     <a href="{% url 'agileHR:training' %}"><button type="button" class="btn btn-outline-secondary">View all Training Sessions</button></a>
+                  {% else %}
+                    <a href="{% url 'agileHR:training_past' %}"><button type="button" class="btn btn-outline-secondary">View all Training Sessions</button></a>
+                  {% endif %}
                 </div>
             </div>
             <div class="text-center"><h5>Attendee List:</h5></div>
