@@ -1,0 +1,31 @@
+{% extends "agileHR/index.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="column mb-4">
+      <h1>Delete</h1>
+    </div>
+  </div>
+
+  {% if can_delete == True %}
+    <div class="row">
+      <div class="column">
+        <p>Are you sure you want to delete <strong>{{ training.title }}</strong>?</p>
+        <p>The training takes place from {{ training.start_date | date:'l, F d, Y' }} to {{training.end_date | date:'l, F d, Y'}}</p>
+        <div class="my-4">
+          <form action="{% url 'agileHR:training_delete' training.id %}" method="POST">{% csrf_token %}<button type="submit" class="btn   btn-danger">Yes, Delete it.</button>
+          <a href="{% url 'agileHR:traindetail' training.id %}"><button type="button" class="btn btn-primary">No, take me back.</button></a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="column">
+        <p>Sorry, <strong>{{ training.title }}</strong> can't be deleted because it is currently underway or has already taken place.</p>
+        <div class="my-4">
+          <a href="{% url 'agileHR:traindetail' training.id %}"><button type="button" class="btn btn-primary">Go back</button></a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
