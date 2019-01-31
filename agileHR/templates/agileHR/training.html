@@ -4,7 +4,13 @@
 <div class="card mx-auto" style="width: 50 rem;">
   <div class="card-body">
     <div class="card-title">
-      <div class="text-center"><h2>Training</h2></div>
+        <div class="text-center">
+                {% if view == "upcoming" %}
+                    <h2>Upcoming Training Sessions</h2>
+                {% else %}
+                    <h2>Past Training Sessions</h2>
+                {% endif %}
+        </div>
     </div>
     <div class="card-text">
       <div>
