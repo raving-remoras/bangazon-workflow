@@ -5,8 +5,9 @@ app_name = "agileHR"
 urlpatterns = [
     path("", views.index, name="index"),
     path("employees/", views.employee, name="employee"),
-    path("employees/<int:employee_id>/", views.employee_detail, name="employee_detail"),
     path("employees/add", views.employee_add, name="employee_add"),
+    path("employees/<int:employee_id>/", views.employee_detail, name="employee_detail"),
+    path("employees/<int:employee_id>/edit", views.employee_edit, name="employee_edit"),
     # ex: /bangazon/departments/
     path("departments/", views.department, name="department"),
     # ex: /bangazon/departments/add
