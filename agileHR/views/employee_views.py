@@ -86,8 +86,21 @@ def employee_edit(request, employee_id):
         render -- loads the employee_form.html template when originally navigating to the page, or renders form with error message if submit was unsuccessful
         HttpResponseRedirect -- loads the employee page if add was successful
     """
-    departments = Department.objects.order_by('name')
+    departments = Department.objects.order_by("name")
     employee = get_object_or_404(Employee, pk=employee_id)
+    employee_computer = EmployeeComputer.objects.filter(employee_id=employee_id).filter(date_revoked=None)
+
+    # Get all computer assignment history
+    computer_assignments = EmployeeComputer.objects.all()
+
+    # Get computers that have previously been assigned but currently aren't
+    currently_unassigned = Computer.objects.exclude(employeecomputer__date_revoked=None)
+
+    # Get computers that have never been assigned
+    never_assigned = Computer.objects.exclude(employeecomputer__in=computer_assignments)
+
+    #combine queryset for final set of available computers
+    computers = currently_unassigned | never_assigned
 
     if request.method == "POST":
         print("post")
@@ -125,6 +138,9 @@ def employee_edit(request, employee_id):
             })
     else:
         context = {
+            "employee": employee,
+            "computers": computers,
+            "employee_computer": employee_computer,
             "departments": departments,
             "edit": "edit",
             "first_name": employee.first_name,
@@ -133,5 +149,5 @@ def employee_edit(request, employee_id):
             "is_supervisor": employee.is_supervisor,
             "department": employee.department
             }
-        print("start date", context["start_date"])
+        print("employee_computer", context["employee_computer"])
         return render(request, "agileHR/employee_form.html", context)

@@ -47,6 +47,37 @@
       >Department Supervisor</label
     >
   </div>
+  {% if edit %}
+  <div class="card mx-auto">
+      <div class="card-body">
+        <h4> Assigned Computer: </h4>
+        {% if not employee_computer %}
+            <p>No Computer Assigned</p>
+        {% endif %}
+        {% for computer in employee_computer %}
+            <p>
+            Assigned Computer: {{ computer.computer.make }}
+            {{ computer.computer.model }} {{ computer.computer.serial_no }}
+            </p>
+        {% endfor %}
+        <div class="form-group">
+                <label for="computer">Assign a New Computer</label>
+                <select class="form-control" name="computer" id="computer">
+                    <option value="select" id="select">Select</option>
+                  {% for comp in computers %}
+                  <option
+                    value="{{ comp.id }}"
+                    id="{{ comp.id }}"
+                    {% if computer.id is comp.id %} selected="selected" {% endif %}
+                    >{{ comp.make }} {{ comp.model }} {{ comp.serial_no }}</option
+                  >
+                  {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+  {% endif %}
   <input type="submit" class="btn btn-primary" value="{% if add %}Add Employee{% else %}Save Changes{% endif %}" />
 </form>
 {% endblock content %}

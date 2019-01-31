@@ -9,6 +9,9 @@
       {{ employee.department.name | title }}
     </h5>
     <div class="card-text">
+        {% if not employee_computer %}
+            <p>No Computer Assigned</p>
+        {% endif %}
       {% for computer in employee_computer %}
       <p>
         Assigned Computer: {{ computer.computer.make }}
