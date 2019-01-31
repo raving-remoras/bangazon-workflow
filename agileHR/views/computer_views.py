@@ -89,11 +89,16 @@ def new_computer(request):
                 "error_message": "Please fill out all fields"
             })
     else:
-        employees = Employee.objects.all()
+        # Get all computer assignment history
         computer_assignments = EmployeeComputer.objects.all()
 
+        # Get employees who have had a computer but do not currently have one.
         need_computers = Employee.objects.exclude(employeecomputer__date_revoked=None)
+
+        # Get employees who have never had a computer.
         never_computers = Employee.objects.exclude(employeecomputer__in=computer_assignments)
+
+        # Combine the two querysets
         final_list = need_computers | never_computers
 
         # print("need computers", need_computers)
