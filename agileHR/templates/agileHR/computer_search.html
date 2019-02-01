@@ -1,0 +1,46 @@
+{% extends "agileHR/index.html" %}
+
+{% comment %}
+Displays new computer form from views.new_computer.
+Author: Sebastian Civarolo
+{% endcomment %}
+
+
+{% block content %}
+    <div class="row">
+      <div class="col-10">
+        <h2>Computer Search</h2>
+      </div>
+      <div class="col-2 text-right">
+          <a href="{% url 'agileHR:computers' %}"class="btn btn-primary text-white">All Computers</a>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        {% if no_results %}
+            <h6>There are no search results for {{ search_text }}</h6>
+            {% else %}
+
+            <h6>{{ length }} results for {{ search_text }}:</h6>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <ul class="list-group">
+          {% for computer in results %}
+          <li class="list-group-item"><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a>
+                {% for ec in computer.employeecomputer_set.all %}
+                    {% if not ec.date_revoked %}
+                        — {{ec.employee.first_name}} {{ec.employee.last_name}}
+                    {% endif %}
+                {% endfor %}
+                </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+{% endblock content %}

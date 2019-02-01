@@ -28,6 +28,7 @@ urlpatterns = [
     path("trainings/add", views.training_add, name="training_add"),
     # ex: /bangazon/computers/
     path("computers/", views.computers, name="computers"),
+    path("computers/search", views.computer_search, name="computer_search"),
     # ex: /bangazon/computers/12
     path("computers/<int:computer_id>/", views.computer_detail, name="computer_detail"),
     path("computers/<int:computer_id>/delete", views.delete_computer, name="delete_computer"),

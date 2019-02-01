@@ -15,12 +15,46 @@ def computers(request):
         render -- loads the computer.html template.
     """
 
-    computers = Computer.objects.all()
+    computers = Computer.objects.all().order_by("make", "model")
     context = {
         "computers": computers
     }
     return render(request, 'agileHR/computers.html', context)
 
+
+def computer_search(request):
+    """Displays search results when a user searches for a computer by make or model
+
+    Author: Sebastian Civarolo
+
+    Returns:
+        render -- loads the page with search results when it receives a POST. Message displayed if no results.
+        HttpResponseRedirect -- if a user goes directly to the url, they are redirected to the computers view.
+    """
+
+    if request.method == "POST":
+
+        search_text = request.POST["search_text"]
+
+        if search_text is not "":
+            by_make = Computer.objects.filter(make__contains=search_text).order_by("make", "model")
+            by_model = Computer.objects.filter(model__contains=search_text).order_by("make", "model")
+            results = by_make | by_model
+            context = {
+                "results": results,
+                "length": len(results),
+                "search_text": search_text,
+                "no_results": True if len(results) is 0 else False
+            }
+        else:
+            context = {
+                "no_results": True,
+                "search_text": search_text
+            }
+        return render(request, 'agileHR/computer_search.html', context)
+
+    else:
+        return HttpResponseRedirect(reverse('agileHR:computers'))
 
 def computer_detail(request, computer_id):
     """Displays the details about a single computer owned by the company.

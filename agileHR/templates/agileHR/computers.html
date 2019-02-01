@@ -16,11 +16,23 @@ Author: Sebastian Civarolo
         </div>
     </div>
 
+    <div class="row my-4">
+        <div class="col">
+            <form action="{% url 'agileHR:computer_search' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search_text" id="search_text" placeholder="search by make or model"><button class="input-group-append btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col">
-            <ul>
+            <ul class="list-group">
             {% for computer in computers %}
-                <li><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a>
+                <li class="list-group-item list-group-item-action">
+                    <span><a href="{% url 'agileHR:computer_detail' computer.id %}">{{computer.make}} {{computer.model}}</a><span>
                 {% for ec in computer.employeecomputer_set.all %}
                     {% if not ec.date_revoked %}
                         — {{ec.employee.first_name}} {{ec.employee.last_name}}
